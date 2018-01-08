@@ -4,6 +4,7 @@
   "description": "A Vue.js project",
   "author": "Steven W. <email@email.fr>",
   "private": true,
+  "main": "elect.js",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
@@ -11,10 +12,14 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1",
     "materialize": "^1.0.0",
+    "materialize-css": "^0.100.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "vuex-persistedstate": "^2.4.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -29,6 +34,8 @@
     "chalk": "^2.0.1",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",
+    "electron": "^1.7.10",
+    "electron-packager": "^10.1.1",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
