@@ -4,8 +4,11 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
+import Vuelidate from 'vuelidate'
 
 Vue.config.productionTip = false
+
+Vue.use(Vuelidate)
 
 require('../node_modules/materialize-css/dist/css/materialize.min.css')
 require('../node_modules/font-awesome/css/font-awesome.min.css')
