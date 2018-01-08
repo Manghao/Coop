@@ -13,7 +13,7 @@ const router = new Router({
 	routes: [
 		{ 
 			name: "login",
-			path: '/', 
+			path: '/login', 
 			component: Login,
 			meta: {
 				requiresAuth: false
@@ -29,7 +29,7 @@ const router = new Router({
 		},
 		{
 			name: 'index',
-			path: '/index',
+			path: '/',
 			component: Index,
 			meta: {
 				requiresAuth: true
@@ -39,15 +39,11 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-	if (to.matched.some(record => record.meta.requiresAuth)) {
-		let auth = localStorage.getItem('auth');
-		if (!auth.session.connected) {
-			next('/login')
-		} else {
-			next()
-		}
-	} else {
+	let auth = JSON.parse(localStorage.getItem('auth'))
+	if (to.matched.some(record => record.meta.requiresAuth) && auth.connected) {
 		next()
+	} else {
+		next('/login')
 	}
 })
 

@@ -1,11 +1,13 @@
 <template>
-	<div class="row">
-		<h1>Index</h1>
+	<div>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="#">Co'op</a>
+		</nav>
 	</div>
 </template>
 
 <script>
-	export default {
-		
-	}
+export default {
+
+}
 </script>

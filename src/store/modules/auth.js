@@ -23,7 +23,7 @@ export default {
 			state.session = session
 			localStorage.setItem('auth', JSON.stringify(session));
 			Materialize.toast('Connexion réussi avec succès !', 3000)
-			this.$router.push("/index")
+			this.$router.push("/")
 		},
 		logout: () => {
 			localStorage.removeItem('auth');
