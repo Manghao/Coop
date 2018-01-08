@@ -1,4 +1,4 @@
-# coop
+# Coop
 
 > A Vue.js project
 
