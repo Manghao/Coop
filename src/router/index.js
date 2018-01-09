@@ -38,13 +38,19 @@ const router = new Router({
 	]
 })
 
-router.beforeEach((to, from, next) => {
+/*router.beforeEach((to, from, next) => {
 	let auth = JSON.parse(localStorage.getItem('auth'))
-	if (to.matched.some(record => record.meta.requiresAuth) && auth.connected) {
-		next()
+	if (to.matched.some(record => record.meta.requiresAuth)) {
+		if (auth != null) {
+			if (auth.connected) {
+				next()
+			} else {
+				next('/login')
+			}
+		}
 	} else {
 		next('/login')
 	}
-})
+})*/
 
 export default router

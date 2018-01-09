@@ -6,8 +6,24 @@
 				<div class="card bg-light">
 					<div class="card-header">Connexion</div>
 					<div class="card-body">
-						<p class="card-text">
-							<form v-on:submit.prevent="login({email, password})">
+						<p class="card-text m-0">
+							<form v-on:submit.prevent="registration({fullname, email, password})">
+								<label for="email">Nom et/ou Prénom :</label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="input-group-text"><i class="fa fa-user"></i></div>
+									</div>
+									<input type="text" class="form-control" id="fullname" placeholder="Nom et/ou Prénom"
+										v-on:input="$v.fullname.$touch"
+										v-bind:class="{invalid: $v.fullname.$error, validate: $v.fullname.$dirty 
+										&& !$v.fullname.$invalid}" 
+										v-model="fullname"
+										v-bind:disabled="locked">
+								</div>
+								<div v-if="$v.email.$error" class="red-text error mb-3">
+									Veuillez saisir un nom et/ou prénom valide !
+								</div>
+
 								<label for="email">Email :</label>
 								<div class="input-group">
 									<div class="input-group-prepend">
@@ -45,7 +61,7 @@
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fa fa-key"></i></div>
 									</div>
-									<input type="passwordr" class="form-control" id="password" placeholder="Mot de passe"
+									<input type="password" class="form-control" id="password" placeholder="Mot de passe"
 										v-on:input="$v.passwordr.$touch"
 										v-bind:class="{invalid: $v.passwordr.$error, validate: $v.passwordr.$dirty 
 										&& !$v.passwordr.$invalid}" 

@@ -16,12 +16,10 @@ export default new Vuex.Store({
 		registration: ({commit}, credentials) => {
 			api.post('/api/members', credentials)
 			.then((response) => {
-				Materialize.toast('Inscription réussi avec succès !', 3000)
+				console.log('Inscription réussie !')
 			})
 			.catch((error) => {
-				error.response.data.error.forEach ((e) => {
-					Materialize.toast(e[0], 3000)
-				})
+				console.log(error)
 			})
 		}
 	}

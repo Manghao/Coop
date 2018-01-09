@@ -22,14 +22,14 @@ export default {
 			}
 			state.session = session
 			localStorage.setItem('auth', JSON.stringify(session));
-			Materialize.toast('Connexion réussi avec succès !', 3000)
+			console.log("Connexion réussie !")
 			this.$router.push("/")
 		},
 		logout: () => {
 			localStorage.removeItem('auth');
 			session.connected = false
 			session.user = {}
-			Materialize.toast('Déconnexion réussi avec succès !', 3000)
+			console.log('Déconnexion réussi avec succès !')
 			this.$router.push("/login")
 		}
 	},
@@ -44,7 +44,7 @@ export default {
 			.then((response) => {
 				commit('signin', response.data)
 			}).catch((error) => {
-				Materialize.toast(error.response.data.error, 3000)
+				console.log(error)
 			})
 		},
 		logout: ({ commit }) => {
