@@ -6,7 +6,7 @@
 				<div class="card bg-light">
 					<div class="card-header">Connexion</div>
 					<div class="card-body">
-						<p class="card-text">
+						<p class="card-text m-0">
 							<form v-on:submit.prevent="login({email, password})">
 								<label for="email">Email :</label>
 								<div class="input-group">

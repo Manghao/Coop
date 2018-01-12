@@ -4,7 +4,7 @@
 		<div class="row">
 			<div class="col-10 offset-md-1 mt-5">
 				<div class="card bg-light">
-					<div class="card-header">Connexion</div>
+					<div class="card-header">Inscription</div>
 					<div class="card-body">
 						<p class="card-text m-0">
 							<form v-on:submit.prevent="registration({fullname, email, password})">
