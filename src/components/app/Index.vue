@@ -22,7 +22,7 @@
 					</ul>
 				</nav>
 				<div class="col-sm-10 col-md-10 offset-md-2">
-					
+
 				</div>
 			</div>
 		</div>
@@ -30,26 +30,32 @@
 </template>
 
 <script>
-export default {
+    export default {
 
-}
+    }
 </script>
 
 <style>
-.bg-faded {
-	background-color: #f7f7f7;
-}
-.sidebar {
-	position: fixed;
-	top: 56px;
-	bottom: 0;
-	left: 0;
-	z-index: 1000;
-	padding: 20px;
-	padding-right: 20px;
-	padding-left: 20px;
-	overflow-x: hidden;
-	overflow-y: auto;
-	border-right: 1px solid #eee;
-}
+	.bg-faded {
+		background-color: #f7f7f7;
+	}
+
+	.sidebar {
+		min-width: 150px;
+		position: fixed;
+		top: 56px;
+		bottom: 0;
+		left: 0;
+		z-index: 1000;
+		padding: 20px;
+		overflow-x: hidden;
+		overflow-y: auto;
+		border-right: 1px solid #eee;
+	}
+
+	@media screen and (max-width: 600px) {
+		.sidebar {
+			max-width: 150px;
+		}
+	}
 </style>
