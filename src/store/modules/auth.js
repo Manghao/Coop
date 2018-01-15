@@ -1,5 +1,6 @@
-import api from '../../services/api'
-import router from '../../router'
+import api from '@/services/api'
+import ls from '@/services/ls'
+import router from '@/router'
 
 export default {
     namespaced: true,
@@ -20,20 +21,17 @@ export default {
                 password: data.password,
                 token: data.token
             }
-            state.session = {
-                user: user
-            }
-            localStorage.setItem('token', data.token)
+            state.session = user
+            ls.set('token', data.token)
             console.log("Connexion réussie !")
             router.push({
                 name: 'index'
             })
         },
-        logout: () => {
-            localStorage.removeItem('auth')
-            session.connected = false
-            session.user = {}
-            console.log('Déconnexion réussi avec succès !')
+        logout: (state) => {
+            ls.remove('auth')
+            state.session = null
+            console.log('Déconnexion réussie !')
             router.push({
                 name: 'login'
             })
@@ -64,7 +62,15 @@ export default {
                 })
         },
         logout: ({ commit }) => {
-            commit('logout')
+            api.delete('/api/members/signout')
+                .then((response) => {
+                    if (response.data.message) {
+                        commit('logout')
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
         }
     }
 }

@@ -25,6 +25,10 @@
 					</div>
 				</div>
 			</div>
+			<div class="btn-group" role="group">
+				<router-link :to="{name: 'account'}" class="btn btn-secondary">Mon Compte</router-link>
+				<button class="btn btn-danger" @click="logout"><i class="fa fa-sign-out"></i></button>
+			</div>
 		</nav>
 		<div class="container-fluid">
 			<div class="row">
@@ -44,6 +48,7 @@
 						</li>
 					</ul>
 				</nav>
+
 				<div class="col-sm-10 col-md-10 offset-md-2">
 
 				</div>
@@ -53,8 +58,14 @@
 </template>
 
 <script>
-    export default {
+	import { mapActions } from 'vuex'
 
+    export default {
+    	methods: {
+    		logout () {
+    			this.$store.dispatch('auth/logout')
+    		}
+    	}
     }
 </script>
 

@@ -73,9 +73,7 @@
 								</div>
 								<div class="text-center mt-3">
 									<button type="submit" v-bind:disabled="$v.$invalid || locked" class="btn btn-primary">S'inscrire</button>
-									<router-link :to="{name: 'login'}">
-										<span class="btn btn-danger right">Connexion</span>
-									</router-link>
+									<router-link :to="{name: 'login'}" class="btn btn-danger right">Connexion</router-link>
 								</div>
 							</form>
 						</p>
