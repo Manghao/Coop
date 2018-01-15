@@ -7,7 +7,7 @@
 					<div class="card-header">Inscription</div>
 					<div class="card-body">
 						<p class="card-text m-0">
-							<form v-on:submit.prevent="register({fullname, email, password})">
+							<form v-on:submit.prevent="registration({fullname, email, password})">
 								<label for="email">Nom et/ou Prénom :</label>
 								<div class="input-group">
 									<div class="input-group-prepend">
@@ -118,7 +118,7 @@
 			}
 		},
 		methods: {
-			...mapActions('auth', ['register'])
+			...mapActions('auth', ['registration'])
 		}
 	}
 </script>

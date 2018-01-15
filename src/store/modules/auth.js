@@ -12,7 +12,7 @@ export default {
         session: null
     },
     mutations: {
-    	registration: (data) => {
+    	registration: () => {
     		router.push({
                 name: 'login'
             })
@@ -53,7 +53,8 @@ export default {
             console.log(credentials);
             api.post('/api/members', credentials)
                 .then((response) => {
-					commit('registration', response.data)
+                    console.log('Inscription réussie !')
+					commit('registration')
                 }).catch((error) => {
                 	console.log(error.response.data.error[0][0])
                 })
