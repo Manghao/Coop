@@ -2,14 +2,28 @@
 	<div>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<a class="navbar-brand" href="/">Co'op</a>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active">
-						<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-					</li>
-				</ul>
-				<a class="btn btn-light mr-1" href="#/login">Connexion <span class="sr-only">(current)</span></a>
-				<a class="btn btn-light" href="#/registration">Inscription <span class="sr-only">(current)</span></a>
+			<div class="navbar-collapse">
+				<div class="dropdown">
+					<a class="btn_channels nav-link dropdown-toggle text-light" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Channels
+					</a>
+					<div class="dropdown-menu sidebar bg-faded m-0" aria-labelledby="dropdownMenuButton">
+						<ul class="nav nav-pills flex-column">
+							<li class="nav-item">
+								<a class="nav-link active" href="#">Channel 1 <span class="sr-only">(current)</span></a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Channel 2</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Channel 3</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Channel 4</a>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</nav>
 		<div class="container-fluid">
@@ -62,9 +76,28 @@
 		border-right: 1px solid #eee;
 	}
 
+	.btn_channels {
+		cursor: pointer;
+		display: none;
+	}
+
 	@media screen and (max-width: 600px) {
 		.sidebar {
 			max-width: 150px;
+		}
+	}
+
+	@media screen and (max-width: 500px) {
+		.sidebar {
+			display: none;
+		}
+
+		.navbar-collapse {
+			flex-basis: 0;
+		}
+
+		.btn_channels {
+			display: block;
 		}
 	}
 </style>
