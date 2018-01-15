@@ -5,10 +5,14 @@ import App from './App'
 import router from './router'
 import store from './store'
 import Vuelidate from 'vuelidate'
+import interceptors from '@/services/interceptors'
 
 Vue.config.productionTip = false
 
 Vue.use(Vuelidate)
+Vue.use(interceptors, {
+	router
+})
 
 require('../node_modules/font-awesome/css/font-awesome.min.css')
 require('../node_modules/bootstrap/dist/css/bootstrap.min.css')
