@@ -1,7 +1,16 @@
 <template>
 	<div>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<a class="navbar-brand" href="#">Co'op</a>
+			<a class="navbar-brand" href="/">Co'op</a>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+					</li>
+				</ul>
+				<a class="btn btn-light mr-1" href="#/login">Connexion <span class="sr-only">(current)</span></a>
+				<a class="btn btn-light" href="#/registration">Inscription <span class="sr-only">(current)</span></a>
+			</div>
 		</nav>
 		<div class="container-fluid">
 			<div class="row">
