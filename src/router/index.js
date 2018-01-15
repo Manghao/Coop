@@ -30,7 +30,7 @@ const router = new Router({
 	]
 })
 
-/*router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => {
 	console.log("A : " + store.getters['auth/getSession'])
 	if (to.name != 'login' && !store.getters['auth/getSession']) {
 		next({ name: 'login' })
@@ -39,6 +39,6 @@ const router = new Router({
 	} else {
 		next()
 	}
-})*/
+})
 
 export default router
