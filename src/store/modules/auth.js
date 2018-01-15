@@ -1,4 +1,5 @@
 import api from '../../services/api'
+import router from '../../router'
 
 const session = {
     connected: false,
@@ -12,10 +13,9 @@ export default {
     },
     mutations: {
     	registration: (data) => {
-    		this.$router.push({
-				path: '#/login',
-				query: { email: data.email }
-			});
+    		router.push({
+                name: 'login'
+            })
 		},
         signin: (state, data) => {
             session.connected = true
@@ -27,17 +27,20 @@ export default {
                 token: data.token
             }
             state.session = session
-            localStorage.setItem('auth', JSON.stringify(session));
+            localStorage.setItem('auth', JSON.stringify(session))
             console.log("Connexion réussie !")
-            console.log(this);
-            this.$router.push("/")
+            router.push({
+                name: 'index'
+            })
         },
         logout: () => {
-            localStorage.removeItem('auth');
+            localStorage.removeItem('auth')
             session.connected = false
             session.user = {}
             console.log('Déconnexion réussi avec succès !')
-            this.$router.push("/login")
+            router.push({
+                name: 'login'
+            })
         }
     },
     getters: {
