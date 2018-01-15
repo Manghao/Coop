@@ -8,43 +8,37 @@
 						Channels
 					</a>
 					<div class="dropdown-menu sidebar bg-faded m-0" aria-labelledby="dropdownMenuButton">
-						<ul class="nav nav-pills flex-column">
+						<button class="btn btn-secondary mb-1"><i class="fa fa-plus-circle"></i> Ajouter</button>
+						<ul class="nav nav-pills flex-column" v-for="channel in channels">
 							<li class="nav-item">
-								<a class="nav-link active" href="#">Channel 1 <span class="sr-only">(current)</span></a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">Channel 2</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">Channel 3</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">Channel 4</a>
+								<hr class="m-0" />
+								<a class="nav-link" href="#">
+									<strong>{{ channel.label }}</strong> 
+									<br />
+									<small>{{ channel.topic }}</small>
+								</a>
 							</li>
 						</ul>
 					</div>
 				</div>
 			</div>
 			<div class="btn-group" role="group">
-				<router-link :to="{name: 'account'}" class="btn btn-secondary">Mon Compte</router-link>
+				<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#account">{{ user.fullname }}</button>
 				<button class="btn btn-danger" @click="logout"><i class="fa fa-sign-out"></i></button>
 			</div>
 		</nav>
 		<div class="container-fluid">
 			<div class="row">
 				<nav class="col-sm-2 col-md-2 hidden-xs-down bg-faded sidebar">
-					<ul class="nav nav-pills flex-column">
+					<button class="btn btn-secondary mb-1"><i class="fa fa-plus-circle"></i> Ajouter un channel</button>
+					<ul class="nav nav-pills flex-column" v-for="channel in channels">
 						<li class="nav-item">
-							<a class="nav-link active" href="#">Channel 1 <span class="sr-only">(current)</span></a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Channel 2</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Channel 3</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Channel 4</a>
+							<hr class="m-0" />
+							<a class="nav-link" href="#">
+								<strong>{{ channel.label }}</strong> 
+								<br />
+								<small>{{ channel.topic }}</small>
+							</a>
 						</li>
 					</ul>
 				</nav>
@@ -54,19 +48,50 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="modal fade" id="account" tabindex="-1" role="dialog" aria-labelledby="account" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="accountLabel">Mes informations</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p><strong>Nom :</strong> {{ user.fullname }}</p>
+						<p><strong>Email :</strong> {{ user.email }}</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
-	import { mapActions } from 'vuex'
+	import { mapActions, mapGetters } from 'vuex'
 
-    export default {
-    	methods: {
-    		logout () {
-    			this.$store.dispatch('auth/logout')
-    		}
-    	}
-    }
+	export default {
+		created() {
+			this.$store.dispatch('channel/channels')
+		},
+		computed: {
+			...mapGetters(
+				{
+					user: 'auth/getSession',
+					channels: 'channel/getChannels'
+				}
+			)
+		},
+		methods: {
+			logout () {
+				this.$store.dispatch('auth/logout')
+			}
+		}
+	}
 </script>
 
 <style>
