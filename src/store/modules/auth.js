@@ -29,8 +29,7 @@ export default {
             state.session = session
             localStorage.setItem('auth', JSON.stringify(session));
             console.log("Connexion réussie !")
-            console.log(this);
-            this.$router.push("/")
+            // this.$router.push("/")
         },
         logout: () => {
             localStorage.removeItem('auth');
@@ -41,7 +40,7 @@ export default {
         }
     },
     getters: {
-        getSession: (state) => () => {
+        getSession: (state) => {
             return state.session
         }
     },

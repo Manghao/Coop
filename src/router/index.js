@@ -5,7 +5,7 @@ import Login from '@/components/user/Login'
 import Register from '@/components/user/Register'
 import Index from '@/components/app/Index'
 
-import store from '../store/index'
+import store from '@/store/index'
 
 Vue.use(Router)
 
@@ -39,17 +39,13 @@ const router = new Router({
 })
 
 /*router.beforeEach((to, from, next) => {
-	let auth = JSON.parse(localStorage.getItem('auth'))
-	if (to.matched.some(record => record.meta.requiresAuth)) {
-		if (auth != null) {
-			if (auth.connected) {
-				next()
-			} else {
-				next('/login')
-			}
-		}
+	console.log(store.getters['auth/getSession'])
+	if (to.name == 'login' && store.getters['auth/getSession'] == null) {
+		next({ name: 'login' })
+	} else if (to.name == 'login' && store.getters['auth/getSession'] != null) {
+		next({ name: 'index' })
 	} else {
-		next('/login')
+		next()
 	}
 })*/
 
