@@ -2,7 +2,6 @@ import api from '../../services/api'
 import router from '../../router'
 
 const session = {
-    connected: false,
     user: {}
 }
 
@@ -18,7 +17,6 @@ export default {
             })
 		},
         signin: (state, data) => {
-            session.connected = true
             session.user = {
                 _id: data._id,
                 fullname: data.fullname,
