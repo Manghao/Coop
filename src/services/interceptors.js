@@ -13,7 +13,6 @@ export default {
 				}
 				config.params.token = ls.get('token')
 			}
-
 			return config
 		}, function (error) {
 			return Promise.reject(error)
