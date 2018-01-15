@@ -1,9 +1,5 @@
 import api from '../../services/api'
-
-const session = {
-    connected: false,
-    user: {}
-}
+import router from '../../router'
 
 export default {
     namespaced: true,
@@ -11,32 +7,36 @@ export default {
         session: null
     },
     mutations: {
-    	registration: (data) => {
-    		this.$router.push({
-				path: '#/login',
-				query: { email: data.email }
-			});
+    	registration: () => {
+    		router.push({
+                name: 'login'
+            })
 		},
         signin: (state, data) => {
-            session.connected = true
-            session.user = {
+            let user = {
                 _id: data._id,
                 fullname: data.fullname,
                 email: data.email,
                 password: data.password,
                 token: data.token
             }
-            state.session = session
-            localStorage.setItem('auth', JSON.stringify(session));
+            state.session = {
+                user: user
+            }
+            localStorage.setItem('token', data.token)
             console.log("Connexion réussie !")
-            // this.$router.push("/")
+            router.push({
+                name: 'index'
+            })
         },
         logout: () => {
-            localStorage.removeItem('auth');
+            localStorage.removeItem('auth')
             session.connected = false
             session.user = {}
             console.log('Déconnexion réussi avec succès !')
-            this.$router.push("/login")
+            router.push({
+                name: 'login'
+            })
         }
     },
     getters: {
@@ -49,7 +49,8 @@ export default {
             console.log(credentials);
             api.post('/api/members', credentials)
                 .then((response) => {
-					commit('registration', response.data)
+                    console.log('Inscription réussie !')
+					commit('registration')
                 }).catch((error) => {
                 	console.log(error.response.data.error[0][0])
                 })

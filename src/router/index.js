@@ -14,39 +14,29 @@ const router = new Router({
 		{ 
 			name: "login",
 			path: '/login', 
-			component: Login,
-			meta: {
-				requiresAuth: false
-			}
+			component: Login
  		},
 		{ 
 			name: "registration",
 			path: '/registration', 
-			component: Register,
-			meta: {
-				requiresAuth: false
-			}
+			component: Register
 		},
 		{
 			name: 'index',
 			path: '/',
-			component: Index,
-			meta: {
-				requiresAuth: true
-			}
+			component: Index
 		}
 	]
 })
 
-/*router.beforeEach((to, from, next) => {
-	console.log(store.getters['auth/getSession'])
-	if (to.name == 'login' && store.getters['auth/getSession'] == null) {
+router.beforeEach((to, from, next) => {
+	if (to.name != 'login' && !store.getters['auth/getSession']) {
 		next({ name: 'login' })
-	} else if (to.name == 'login' && store.getters['auth/getSession'] != null) {
+	} else if (to.name == 'login' && store.getters['auth/getSession']) {
 		next({ name: 'index' })
 	} else {
 		next()
 	}
-})*/
+})
 
 export default router
