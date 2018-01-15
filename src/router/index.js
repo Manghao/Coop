@@ -5,7 +5,7 @@ import Login from '@/components/user/Login'
 import Register from '@/components/user/Register'
 import Index from '@/components/app/Index'
 
-import store from '../store/index'
+import store from '@/store/index'
 
 Vue.use(Router)
 
@@ -14,43 +14,29 @@ const router = new Router({
 		{ 
 			name: "login",
 			path: '/login', 
-			component: Login,
-			meta: {
-				requiresAuth: false
-			}
+			component: Login
  		},
 		{ 
 			name: "registration",
 			path: '/registration', 
-			component: Register,
-			meta: {
-				requiresAuth: false
-			}
+			component: Register
 		},
 		{
 			name: 'index',
 			path: '/',
-			component: Index,
-			meta: {
-				requiresAuth: true
-			}
+			component: Index
 		}
 	]
 })
 
-/*router.beforeEach((to, from, next) => {
-	let auth = JSON.parse(localStorage.getItem('auth'))
-	if (to.matched.some(record => record.meta.requiresAuth)) {
-		if (auth != null) {
-			if (auth.connected) {
-				next()
-			} else {
-				next('/login')
-			}
-		}
+router.beforeEach((to, from, next) => {
+	if (to.name != 'login' && !store.getters['auth/getSession']) {
+		next({ name: 'login' })
+	} else if (to.name == 'login' && store.getters['auth/getSession']) {
+		next({ name: 'index' })
 	} else {
-		next('/login')
+		next()
 	}
-})*/
+})
 
 export default router

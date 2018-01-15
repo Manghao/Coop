@@ -1,10 +1,6 @@
 import api from '../../services/api'
 import router from '../../router'
 
-const session = {
-    user: {}
-}
-
 export default {
     namespaced: true,
     state: {
@@ -17,15 +13,17 @@ export default {
             })
 		},
         signin: (state, data) => {
-            session.user = {
+            let user = {
                 _id: data._id,
                 fullname: data.fullname,
                 email: data.email,
                 password: data.password,
                 token: data.token
             }
-            state.session = session
-            localStorage.setItem('auth', JSON.stringify(session))
+            state.session = {
+                user: user
+            }
+            localStorage.setItem('token', data.token)
             console.log("Connexion réussie !")
             router.push({
                 name: 'index'
@@ -42,7 +40,7 @@ export default {
         }
     },
     getters: {
-        getSession: (state) => () => {
+        getSession: (state) => {
             return state.session
         }
     },
