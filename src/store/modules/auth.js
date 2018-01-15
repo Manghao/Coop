@@ -14,14 +14,7 @@ export default {
             })
 		},
         signin: (state, data) => {
-            let user = {
-                _id: data._id,
-                fullname: data.fullname,
-                email: data.email,
-                password: data.password,
-                token: data.token
-            }
-            state.session = user
+            state.session = data
             ls.set('token', data.token)
             console.log("Connexion réussie !")
             router.push({
