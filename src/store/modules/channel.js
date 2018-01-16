@@ -6,17 +6,20 @@ export default {
     namespaced: true,
     state: {
         channels: null,
-        posts: null
+        posts: {
+            idChannel: null,
+            posts: []
+        }
     },
     mutations: {
     	setChannels: (state, channels) => {
             state.channels = channels
         },
-        setPosts: (state, idChannel, posts) => {
-    	    state.posts = {
-    	        idChannel: idChannel,
-    	        posts: posts
-            }
+        setPosts: (state, posts) => {
+    	    state.posts = posts
+        },
+        addPost: (state, post) => {
+    	    state.posts.posts.push(post)
         }
     },
     getters: {
@@ -42,10 +45,18 @@ export default {
         channelPosts: ({ commit }, idChannel) => {
             api.get('/api/channels/' + idChannel + '/posts')
                 .then((response) => {
-                    commit('setPosts', idChannel, response.data)
+                    commit('setPosts', { idChannel: idChannel, posts: response.data })
                 }).catch((error) => {
                     console.log(error)
                 })
+        },
+        addPost: ({ commit }, credentials) => {
+            api.post('/api/channels/' + credentials.idChannel + '/posts', credentials)
+                .then((response) => {
+                    commit('addPost', response.data)
+                }).catch((error) => {
+                    console.log(error)
+            })
         }
     }
 }
