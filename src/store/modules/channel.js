@@ -5,11 +5,18 @@ import router from '@/router'
 export default {
     namespaced: true,
     state: {
-        channels: null
+        channels: null,
+        posts: null
     },
     mutations: {
     	setChannels: (state, channels) => {
             state.channels = channels
+        },
+        setPosts: (state, idChannel, posts) => {
+    	    state.posts = {
+    	        idChannel: idChannel,
+    	        posts: posts
+            }
         }
     },
     getters: {
@@ -18,6 +25,9 @@ export default {
         },
         getChannel: (state, id) => {
             return state.channels
+        },
+        getPosts: (state) => {
+            return state.posts
         }
     },
     actions: {
@@ -27,6 +37,14 @@ export default {
 					commit('setChannels', response.data)
                 }).catch((error) => {
                 	console.log(error)
+                })
+        },
+        channelPosts: ({ commit }, idChannel) => {
+            api.get('/api/channels/' + idChannel + '/posts')
+                .then((response) => {
+                    commit('setPosts', idChannel, response.data)
+                }).catch((error) => {
+                    console.log(error)
                 })
         }
     }

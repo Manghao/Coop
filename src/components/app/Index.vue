@@ -12,7 +12,7 @@
 						<ul class="nav nav-pills flex-column" v-for="channel in channels">
 							<li class="nav-item">
 								<hr class="m-0" />
-								<a class="nav-link" href="#">
+								<a class="nav-link" @click="getChannelPosts(channel._id)">
 									<strong>{{ channel.label }}</strong> 
 									<br />
 									<small>{{ channel.topic }}</small>
@@ -34,7 +34,7 @@
 					<ul class="nav nav-pills flex-column" v-for="channel in channels">
 						<li class="nav-item">
 							<hr class="m-0" />
-							<a class="nav-link" href="#">
+							<a class="nav-link" @click="getChannelPosts(channel._id)">
 								<strong>{{ channel.label }}</strong> 
 								<br />
 								<small>{{ channel.topic }}</small>
@@ -44,7 +44,9 @@
 				</nav>
 
 				<div class="col-sm-10 col-md-10 offset-md-2">
+					<posts-list :posts="posts">
 
+					</posts-list>
 				</div>
 			</div>
 		</div>
@@ -72,9 +74,13 @@
 </template>
 
 <script>
-	import { mapActions, mapGetters } from 'vuex'
+	import { mapGetters } from 'vuex'
+    import PostsIndex from '@/components/post/Index'
 
 	export default {
+        components: {
+            'posts-list': PostsIndex
+        },
 		created() {
 			this.$store.dispatch('channel/channels')
 		},
@@ -82,13 +88,17 @@
 			...mapGetters(
 				{
 					user: 'auth/getSession',
-					channels: 'channel/getChannels'
+					channels: 'channel/getChannels',
+					posts: 'channel/getPosts'
 				}
 			)
 		},
 		methods: {
 			logout () {
 				this.$store.dispatch('auth/logout')
+			},
+			getChannelPosts (idChannel) {
+			    this.$store.dispatch('channel/channelPosts', idChannel)
 			}
 		}
 	}
@@ -115,6 +125,10 @@
 	.btn_channels {
 		cursor: pointer;
 		display: none;
+	}
+
+	a.nav-link {
+		cursor: pointer;
 	}
 
 	@media screen and (max-width: 600px) {
