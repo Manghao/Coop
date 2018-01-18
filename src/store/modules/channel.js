@@ -20,6 +20,13 @@ export default {
         },
         addPost: (state, post) => {
     	    state.posts.posts.push(post)
+        },
+        deletePost: (state, idPost) => {
+    	    let index = state.posts.posts.find((element, key) => {
+                if (element._id === idPost)
+                    return key
+            })
+            state.posts.posts.splice(index, 1)
         }
     },
     getters: {
@@ -54,6 +61,14 @@ export default {
             api.post('/api/channels/' + credentials.idChannel + '/posts', credentials)
                 .then((response) => {
                     commit('addPost', response.data)
+                }).catch((error) => {
+                    console.log(error)
+                })
+        },
+        deletePost: ({ commit }, credentials) => {
+            api.delete('/api/channels/' + credentials.idChannel + '/posts/' + credentials.idPost)
+                .then((response) => {
+                    commit('deletePost', credentials.idPost)
                 }).catch((error) => {
                     console.log(error)
             })

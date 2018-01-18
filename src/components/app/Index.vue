@@ -2,53 +2,42 @@
 	<div>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<a class="navbar-brand" href="/">Co'op</a>
-			<div class="navbar-collapse">
-				<div class="dropdown">
-					<a class="btn_channels nav-link dropdown-toggle text-light" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Channels
-					</a>
-					<div class="dropdown-menu sidebar bg-faded m-0" aria-labelledby="dropdownMenuButton">
-						<button class="btn btn-secondary mb-1"><i class="fa fa-plus-circle"></i> Ajouter</button>
-						<ul class="nav nav-pills flex-column" v-for="channel in channels">
-							<li class="nav-item">
-								<hr class="m-0" />
-								<a class="nav-link" @click="getChannelPosts(channel._id)">
-									<strong>{{ channel.label }}</strong> 
-									<br />
-									<small>{{ channel.topic }}</small>
-								</a>
-							</li>
-						</ul>
-					</div>
+			<button @click="isActive ? isActive = !isActive : null" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="btn btn_channels text-light" @click="isActive = !isActive">Channels</a>
+					</li>
+				</ul>
+				<div class="btn-group mt-1 mb-1" role="group">
+					<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#account">{{ user.fullname }}</button>
+					<button class="btn btn-danger" @click="logout"><i class="fa fa-sign-out"></i></button>
 				</div>
 			</div>
-			<div class="btn-group" role="group">
-				<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#account">{{ user.fullname }}</button>
-				<button class="btn btn-danger" @click="logout"><i class="fa fa-sign-out"></i></button>
-			</div>
 		</nav>
-		<div class="container-fluid">
-			<div class="row">
-				<nav class="col-sm-2 col-md-2 hidden-xs-down bg-faded sidebar">
+		<div class="container">
+			<transition name="slide-fade">
+				<nav v-if="isActive" class="hidden-xs-down bg-faded sidebar">
 					<button class="btn btn-secondary mb-1"><i class="fa fa-plus-circle"></i> Ajouter un channel</button>
-					<ul class="nav nav-pills flex-column" v-for="channel in channels">
+					<ul class="nav nav-pills flex-column" v-for="channel, key in channels">
 						<li class="nav-item">
 							<hr class="m-0" />
-							<a class="nav-link" @click="getChannelPosts(channel._id)">
-								<strong>{{ channel.label }}</strong> 
+							<a class="nav-link" :class="[key === linkActive ? 'text-primary' : '']" @click="getChannelPosts(key, channel._id)">
+								<strong>{{ channel.label }}</strong>
 								<br />
 								<small>{{ channel.topic }}</small>
 							</a>
 						</li>
 					</ul>
 				</nav>
+			</transition>
 
-				<div class="col-sm-10 col-md-10 offset-md-2">
-					<posts-list :posts="posts">
+			<posts-list :posts="posts">
 
-					</posts-list>
-				</div>
-			</div>
+			</posts-list>
 		</div>
 
 		<div class="modal fade" id="account" tabindex="-1" role="dialog" aria-labelledby="account" aria-hidden="true">
@@ -74,46 +63,64 @@
 </template>
 
 <script>
-	import { mapGetters } from 'vuex'
+    import { mapGetters } from 'vuex'
     import PostsIndex from '@/components/post/Index'
 
-	export default {
+    export default {
+        data () {
+            return {
+                isActive: false,
+				linkActive: 0
+            }
+        },
         components: {
             'posts-list': PostsIndex
         },
-		created() {
-			this.$store.dispatch('channel/channels')
-		},
-		computed: {
-			...mapGetters(
-				{
-					user: 'auth/getSession',
-					channels: 'channel/getChannels',
-					posts: 'channel/getPosts'
-				}
-			)
-		},
-		methods: {
-			logout () {
-				this.$store.dispatch('auth/logout')
-			},
-			getChannelPosts (idChannel) {
-			    this.$store.dispatch('channel/channelPosts', idChannel)
-			}
-		}
-	}
+        created() {
+            this.$store.dispatch('channel/channels')
+        },
+        computed: {
+            ...mapGetters(
+                {
+                    user: 'auth/getSession',
+                    channels: 'channel/getChannels',
+                    posts: 'channel/getPosts'
+                }
+            )
+        },
+        methods: {
+            logout () {
+                this.$store.dispatch('auth/logout')
+            },
+            getChannelPosts (key, idChannel) {
+                this._data.isActive = !this._data.isActive
+				this._data.linkActive = key
+                this.$store.dispatch('channel/channelPosts', idChannel)
+            }
+        }
+    }
 </script>
 
 <style>
+	.slide-fade-enter-active {
+		transition: all .25s ease-in;
+	}
+	.slide-fade-leave-active {
+		transition: all .25s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+	}
+	.slide-fade-enter, .slide-fade-leave-to {
+		transform: translateX(-10px);
+		opacity: 0;
+	}
+
 	.bg-faded {
 		background-color: #f7f7f7;
 	}
 
 	.sidebar {
-		min-width: 150px;
-		position: fixed;
-		top: 56px;
-		bottom: 0;
+		width: 210px;
+		height: 100%;
+		position: absolute;
 		left: 0;
 		z-index: 1000;
 		padding: 20px;
@@ -124,30 +131,9 @@
 
 	.btn_channels {
 		cursor: pointer;
-		display: none;
 	}
 
 	a.nav-link {
 		cursor: pointer;
-	}
-
-	@media screen and (max-width: 600px) {
-		.sidebar {
-			max-width: 150px;
-		}
-	}
-
-	@media screen and (max-width: 500px) {
-		.sidebar {
-			display: none;
-		}
-
-		.navbar-collapse {
-			flex-basis: 0;
-		}
-
-		.btn_channels {
-			display: block;
-		}
 	}
 </style>

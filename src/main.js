@@ -6,12 +6,19 @@ import router from './router'
 import store from './store'
 import Vuelidate from 'vuelidate'
 import interceptors from '@/services/interceptors'
+import moment from 'moment'
 
 Vue.config.productionTip = false
 
 Vue.use(Vuelidate)
 Vue.use(interceptors, {
 	router
+})
+
+Vue.filter('formatDate', (value) => {
+    if (value) {
+        return moment(String(value)).format('MM/DD/YYYY hh:mm')
+    }
 })
 
 require('../node_modules/font-awesome/css/font-awesome.min.css')
