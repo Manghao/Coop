@@ -17,7 +17,6 @@ export default {
         },
         setPosts: (state, posts) => {
     	    state.posts = posts
-            store.dispatch('channel/getPostMember', posts.posts)
         },
         addPost: (state, post) => {
     	    state.posts.posts.push(post)
@@ -31,8 +30,15 @@ export default {
                 }
             })
         },
-        getPostMember: (state, member) => {
-    	    state.members.push(member)
+        getPostMember: (state, member_id) => {
+            state.members.forEach((member) => {
+                if (member._id == member_id) {
+                    return member.fullname
+                }
+            })
+        },
+        setMembers: (state, members) => {
+            state.members = members
         }
     },
     getters: {
@@ -82,15 +88,17 @@ export default {
                     console.log(error)
                 })
         },
-        getPostMember: ({ commit }, posts) => {
-            for (let i = 0; i < posts.length; i++) {
-                api.get('/api/members/' + posts[i].member_id + '/signedin')
-                    .then((response) => {
-                        commit('getPostMember', response.data)
-                    }).catch((error) => {
+        members: ({commit}) => {
+            api.get('/api/members')
+                .then((response) => {
+                    commit('setMembers', response.data)
+                }) 
+                .catch((error) => {
                     console.log(error)
-                    })
-            }
+                })
+        },
+        getPostMember: ({ commit }, member_id) => {
+            commit('getPostMember', member_id)
         }
     }
 }

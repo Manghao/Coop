@@ -35,9 +35,7 @@
 				</nav>
 			</transition>
 
-			<posts-list :posts="posts" :members="members">
-
-			</posts-list>
+			<posts-list :posts="posts" :members="members"></posts-list>
 		</div>
 
 		<div class="modal fade" id="account" tabindex="-1" role="dialog" aria-labelledby="account" aria-hidden="true">
@@ -63,7 +61,7 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
+    import { mapGetters, mapActions } from 'vuex'
     import PostsIndex from '@/components/post/Index'
 
     export default {
@@ -77,6 +75,7 @@
             'posts-list': PostsIndex
         },
         created() {
+        	this.$store.dispatch('channel/members')
             this.$store.dispatch('channel/channels')
         },
         computed: {
