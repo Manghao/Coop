@@ -1,6 +1,5 @@
 import api from '@/services/api'
-import ls from '@/services/ls'
-import router from '@/router'
+import store from '@/store'
 
 export default {
     namespaced: true,
@@ -9,7 +8,8 @@ export default {
         posts: {
             idChannel: null,
             posts: []
-        }
+        },
+        members: []
     },
     mutations: {
     	setChannels: (state, channels) => {
@@ -17,16 +17,22 @@ export default {
         },
         setPosts: (state, posts) => {
     	    state.posts = posts
+            store.dispatch('channel/getPostMember', posts.posts)
         },
         addPost: (state, post) => {
     	    state.posts.posts.push(post)
         },
         deletePost: (state, idPost) => {
-    	    let index = state.posts.posts.find((element, key) => {
-                if (element._id === idPost)
-                    return key
+    	    state.posts.posts.find((element, key) => {
+                if (element._id === idPost) {
+                    state.posts.posts.splice(key, 1)
+                    state.members.splice(key, 1)
+                    return true
+                }
             })
-            state.posts.posts.splice(index, 1)
+        },
+        getPostMember: (state, member) => {
+    	    state.members.push(member)
         }
     },
     getters: {
@@ -38,6 +44,9 @@ export default {
         },
         getPosts: (state) => {
             return state.posts
+        },
+        getMembers: (state) => {
+            return state.members
         }
     },
     actions: {
@@ -71,7 +80,17 @@ export default {
                     commit('deletePost', credentials.idPost)
                 }).catch((error) => {
                     console.log(error)
-            })
+                })
+        },
+        getPostMember: ({ commit }, posts) => {
+            for (let i = 0; i < posts.length; i++) {
+                api.get('/api/members/' + posts[i].member_id + '/signedin')
+                    .then((response) => {
+                        commit('getPostMember', response.data)
+                    }).catch((error) => {
+                    console.log(error)
+                    })
+            }
         }
     }
 }

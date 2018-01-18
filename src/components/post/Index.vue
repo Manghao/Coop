@@ -4,19 +4,18 @@
             <h4 class="card-header">
                 Posts
             </h4>
-            <div class="card-body">
-                <div class="card" v-if="posts.posts.length > 0" v-for="p in posts.posts">
-                    {{ p._id }}
+            <div class="card-body" v-if="posts.posts.length > 0">
+                <div class="card" v-for="p, key in posts.posts">
                     <div class="card-body">
                         <i class="float-right fa fa-times text-danger" @click="deletePost(p._id)"></i>
-                        <p><small>Ecrit le {{ p.updated_at | formatDate }}</small></p>
+                        <p><small>Par {{ members[key].fullname }} le {{ p.updated_at | formatDate }}</small></p>
                         <p class="card-text pl-3 pr-3">{{ p.message }}</p>
                     </div>
                 </div>
-                <div class="card" v-else>
-                    <div class="card-body">
-                        <p class="card-text pl-3 pr-3">Aucun post pour cette chaîne !</p>
-                    </div>
+            </div>
+            <div class="card-body" v-else>
+                <div class="alert alert-info m-0" role="alert">
+                    Aucun post pour cette chaîne !
                 </div>
             </div>
         </div>
@@ -35,7 +34,7 @@
     import { required, minLength } from 'vuelidate/lib/validators'
 
     export default {
-        props: ['posts'],
+        props: ['posts', 'members'],
         data() {
             return {
                 message: '',

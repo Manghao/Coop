@@ -35,7 +35,7 @@
 				</nav>
 			</transition>
 
-			<posts-list :posts="posts">
+			<posts-list :posts="posts" :members="members">
 
 			</posts-list>
 		</div>
@@ -84,7 +84,8 @@
                 {
                     user: 'auth/getSession',
                     channels: 'channel/getChannels',
-                    posts: 'channel/getPosts'
+                    posts: 'channel/getPosts',
+					members: 'channel/getMembers'
                 }
             )
         },
