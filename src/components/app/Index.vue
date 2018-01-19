@@ -94,27 +94,7 @@
 		opacity: 0;
 	}
 
-	.bg-faded {
-		background-color: #f7f7f7;
-	}
-
-	.sidebar {
-		width: 210px;
-		height: 100%;
-		position: absolute;
-		left: 0;
-		z-index: 1000;
-		padding: 20px;
-		overflow-x: hidden;
-		overflow-y: auto;
-		border-right: 1px solid #eee;
-	}
-
 	.btn_channels {
-		cursor: pointer;
-	}
-
-	a.nav-link {
 		cursor: pointer;
 	}
 </style>
