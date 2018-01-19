@@ -1,14 +1,14 @@
 <template>
     <div>
         <br />
-        <div class="card">
+        <div class="card posts">
             <h4 class="card-header">
                 Posts
             </h4>
             <div class="card-body" v-if="posts.posts.length > 0">
                 <div class="card" v-for="p in posts.posts">
                     <div class="card-body">
-                        <i class="float-right fa fa-times text-danger" @click="deletePost(p._id)"></i>
+                        <i v-if="p.member_id === session._id" class="float-right fa fa-times text-danger" @click="deletePost(p._id)"></i>
                         <p><small>Par <strong>{{ getPostMember(p.member_id) }}</strong> le {{ p.updated_at | formatDate }}</small></p>
                         <p class="card-text pl-3 pr-3">{{ p.message }}</p>
                     </div>
@@ -32,6 +32,7 @@
 
 <script>
     import { required, minLength } from 'vuelidate/lib/validators'
+    import { mapGetters } from 'vuex'
 
     export default {
         props: ['posts', 'members'],
@@ -47,6 +48,13 @@
                 required,
                 minLenght: minLength(1)
             }
+        },
+        computed: {
+            ...mapGetters(
+                {
+                    session: 'auth/getSession'
+                }
+            )
         },
         methods: {
             addPost (credentials) {
@@ -73,5 +81,11 @@
 <style scoped>
     i.fa-times {
         cursor: pointer;
+    }
+
+    .posts {
+        height: 75vh;
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 </style>
