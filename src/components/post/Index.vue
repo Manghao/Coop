@@ -1,21 +1,22 @@
 <template>
     <div>
+        <br />
         <div class="card">
             <h4 class="card-header">
                 Posts
             </h4>
             <div class="card-body" v-if="posts.posts.length > 0">
-                <div class="card" v-for="p, key in posts.posts">
+                <div class="card" v-for="p in posts.posts">
                     <div class="card-body">
                         <i class="float-right fa fa-times text-danger" @click="deletePost(p._id)"></i>
-                        <p><small>Par {{ members[key].fullname }} le {{ p.updated_at | formatDate }}</small></p>
+                        <p><small>Par <strong>{{ getPostMember(p.member_id) }}</strong> le {{ p.updated_at | formatDate }}</small></p>
                         <p class="card-text pl-3 pr-3">{{ p.message }}</p>
                     </div>
                 </div>
             </div>
             <div class="card-body" v-else>
                 <div class="alert alert-info m-0" role="alert">
-                    Aucun post pour cette chaîne !
+                    Aucun post pour ce channel !
                 </div>
             </div>
         </div>
@@ -55,6 +56,16 @@
             },
             deletePost (idPost) {
                 this.$store.dispatch('channel/deletePost', { idChannel: this._data.idChannel, idPost: idPost })
+            },
+            getPostMember (member_id) {
+            	let members = this.$store.getters['channel/getMembers']
+            	let fullname = null;
+            	members.forEach((member) => {
+	                if (member._id == member_id) {
+	                    fullname = member.fullname
+	                }
+	            })
+	            return fullname
             }
         }
     }
