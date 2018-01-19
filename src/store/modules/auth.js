@@ -36,8 +36,7 @@ export default {
         }
     },
     actions: {
-        register: ({ commit }, credentials) => {
-            console.log(credentials);
+        registration: ({ commit }, credentials) => {
             api.post('/api/members', credentials)
                 .then((response) => {
                     console.log('Inscription réussie !')
