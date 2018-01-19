@@ -23,8 +23,7 @@
         <form v-on:submit.prevent="addPost({message, idChannel})" class="input-group mt-3 mb-3">
             <input type="text" class="form-control" id="message" placeholder="Entrer votre message..."
                    v-on:input="$v.message.$touch"
-                   v-bind:class="{validate: $v.message.$dirty
-										&& !$v.message.$invalid}"
+                   v-bind:class="{ validate: $v.message.$dirty && !$v.message.$invalid }"
                    v-model="message">
             <button type="submit" v-bind:disabled="$v.$invalid || locked" class="btn btn-primary">Envoyer</button>
         </form>
@@ -61,7 +60,7 @@
             	let members = this.$store.getters['channel/getMembers']
             	let fullname = null;
             	members.forEach((member) => {
-	                if (member._id == member_id) {
+	                if (member._id === member_id) {
 	                    fullname = member.fullname
 	                }
 	            })

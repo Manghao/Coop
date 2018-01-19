@@ -19,22 +19,7 @@
 			</div>
 		</nav>
 		<div class="container">
-			<transition name="slide-fade">
-				<nav v-if="isActive" class="hidden-xs-down bg-faded sidebar">
-					<button class="btn btn-secondary mb-1"><i class="fa fa-plus-circle"></i> Ajouter un channel</button>
-					<ul class="nav nav-pills flex-column" v-for="channel, key in channels">
-						<li class="nav-item">
-							<hr class="m-0" />
-							<a class="nav-link" :class="[key === linkActive ? 'text-primary' : '']" @click="getChannelPosts(key, channel._id)">
-								<strong>{{ channel.label }}</strong>
-								<br />
-								<small>{{ channel.topic }}</small>
-							</a>
-						</li>
-					</ul>
-				</nav>
-			</transition>
-
+			<channels-list :channels="channels" :isActive="isActive"></channels-list>
 			<posts-list :posts="posts" :members="members"></posts-list>
 		</div>
 
@@ -61,17 +46,18 @@
 </template>
 
 <script>
-    import { mapGetters, mapActions } from 'vuex'
+    import { mapGetters } from 'vuex'
+    import ChannelsIndex from '@/components/channel/Index'
     import PostsIndex from '@/components/post/Index'
 
     export default {
         data () {
             return {
-                isActive: false,
-				linkActive: 0
+                isActive: false
             }
         },
         components: {
+            'channels-list': ChannelsIndex,
             'posts-list': PostsIndex
         },
         created() {
@@ -91,11 +77,6 @@
         methods: {
             logout () {
                 this.$store.dispatch('auth/logout')
-            },
-            getChannelPosts (key, idChannel) {
-                this._data.isActive = !this._data.isActive
-				this._data.linkActive = key
-                this.$store.dispatch('channel/channelPosts', idChannel)
             }
         }
     }
