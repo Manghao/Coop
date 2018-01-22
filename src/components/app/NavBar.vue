@@ -21,6 +21,26 @@
 				</div>
 			</div>
 
+			<div class="modal fade" id="account" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Mes informations</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<p>{{ user.fullname }}</p>
+							<p>{{ user.email }}</p>
+						</div>
+						<div class="modal-footer">
+						  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<transition name="slide-fade">
 	            <nav v-if="isActive" class="hidden-xs-down bg-faded sidebar">
 	                <button class="btn btn-secondary mb-1"><i class="fa fa-plus-circle"></i> Ajouter un channel</button>
