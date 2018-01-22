@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Login from '@/components/user/Login'
 import Register from '@/components/user/Register'
 import Index from '@/components/app/Index'
+import Channel from '@/components/channel/View'
 
 import store from '@/store/index'
 
@@ -26,6 +27,11 @@ const router = new Router({
 			name: 'index',
 			path: '/',
 			component: Index
+		},
+		{
+			name: 'channel',
+			path: '/:channel_id',
+			component: Channel
 		}
 	]
 })

@@ -6,10 +6,7 @@ export default {
     state: {
         linkActive: 0,
         channels: null,
-        posts: {
-            idChannel: null,
-            posts: []
-        },
+        current: null,
         members: []
     },
     mutations: {
@@ -19,14 +16,11 @@ export default {
         setChannels: (state, channels) => {
             state.channels = channels
         },
-        setPosts: (state, posts) => {
-            state.posts = posts
-        },
         addPost: (state, post) => {
-            state.posts.posts.push(post)
+            state.current.posts.push(post)
         },
         deletePost: (state, post) => {
-            state.posts.posts.splice(state.posts.posts.indexOf(post), 1)
+            state.current.posts.splice(state.current.posts.indexOf(post), 1)
         },
         getPostMember: (state, member_id) => {
             state.members.forEach((member) => {
@@ -37,6 +31,9 @@ export default {
         },
         setMembers: (state, members) => {
             state.members = members
+        },
+        setCurrent: (state, data) => {
+            state.current = data
         }
     },
     getters: {
@@ -46,11 +43,8 @@ export default {
         getChannels: (state) => {
             return state.channels
         },
-        getChannel: (state, id) => {
-            return state.channels
-        },
-        getPosts: (state) => {
-            return state.posts
+        getChannel: (state) => {
+            return state.current
         },
         getMembers: (state) => {
             return state.members
@@ -68,21 +62,23 @@ export default {
                 console.log(error)
             })
         },
-        channelPosts: ({ commit }, idChannel) => {
-            api.get('/api/channels/' + idChannel + '/posts')
+        channel({ commit }, id) {
+            api.get('/api/channels/' + id)
                 .then((response) => {
-                    commit('setPosts', { idChannel: idChannel, posts: response.data })
-                }).catch((error) => {
-                console.log(error)
-            })
+                    commit('setCurrent', response.data)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
         },
-        addPost: ({ commit }, credentials) => {
-            api.post('/api/channels/' + credentials.idChannel + '/posts', credentials)
+        addPost: ({ commit, state }, credentials) => {
+            console.log(credentials)
+            api.post('/api/channels/' + state.current._id + '/posts', credentials)
                 .then((response) => {
                     commit('addPost', response.data)
                 }).catch((error) => {
-                console.log(error)
-            })
+                    console.log(error)
+                })
         },
         deletePost: ({ commit }, post) => {
             api.delete('/api/channels/' + post.channel_id + '/posts/' + post._id)

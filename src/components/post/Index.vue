@@ -1,5 +1,5 @@
 <template>
-	<div >
+	<div>
 		<br />
 		<div class="card">
 			<h4 class="card-header">
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-	import { mapGetters } from 'vuex'
+	import { mapGetters, mapActions } from 'vuex'
 	import { required, minLength } from 'vuelidate/lib/validators'
 	import Vue from 'vue'
 	import VueSimplemde from 'vue-simplemde'
@@ -82,7 +82,7 @@
 			},
 			...mapGetters(
 				{
-					session: 'auth/getSession'
+					session: 'auth/getSession',
 				}
 			)
 		},
