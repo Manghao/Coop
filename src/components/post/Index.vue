@@ -1,16 +1,20 @@
 <template>
-	<div>
+	<div >
 		<br />
 		<div class="card">
 			<h4 class="card-header">
 				Posts
 			</h4>
-			<div class="card-body" v-if="posts.posts.length > 0">
-				<div class="card" v-for="p in posts.posts">
+			<div class="card-body posts" v-if="posts.posts.length > 0">
+				<div class="card" v-for="p in posts.posts" :key="p._id">
 					<div class="card-body">
-						<i class="float-right fa fa-times text-danger" @click="deletePost(p._id)"></i>
+						<i v-if="p.member_id == session._id" class="float-right fa fa-times text-danger" @click="deletePost(p)"></i>
 						<p><small>Par <strong>{{ getPostMember(p.member_id) }}</strong> le {{ p.updated_at | formatDate }}</small></p>
-						<p class="card-text pl-3 pr-3"><vue-markdown :highlight="true">{{ p.message }}</vue-markdown></p>
+						<p class="card-text pl-3 pr-3">
+							<span v-highlightjs>
+								<vue-markdown :highlight="true">{{ p.message }}</vue-markdown>
+							</span v-highlightjs>
+						</p>
 					</div>
 				</div>
 			</div>
@@ -36,17 +40,15 @@
 </template>
 
 <script>
+	import { mapGetters } from 'vuex'
 	import { required, minLength } from 'vuelidate/lib/validators'
 	import Vue from 'vue'
 	import VueSimplemde from 'vue-simplemde'
 	import markdownEditor from 'vue-simplemde/src/markdown-editor'
 	import VueMarkdown from 'vue-markdown'
-	import hljs from 'highlight.js'
-
-	hljs.initHighlightingOnLoad();
-
-	window.hljs = hljs
-
+	import VueHighlightJS from 'vue-highlightjs'
+ 
+	Vue.use(VueHighlightJS)
 	Vue.use(VueSimplemde)
 
 	export default {
@@ -75,15 +77,20 @@
 		computed: {
 			simplemde () {
 				return this.$refs.markdownEditor.simplemde
-			}
+			},
+			...mapGetters(
+				{
+					session: 'auth/getSession'
+				}
+			)
 		},
 		methods: {
 			addPost (credentials) {
 				this.$store.dispatch('channel/addPost', credentials)
 				this._data.message = ''
 			},
-			deletePost (idPost) {
-				this.$store.dispatch('channel/deletePost', { idChannel: this._data.idChannel, idPost: idPost })
+			deletePost (post) {
+				this.$store.dispatch('channel/deletePost', post)
 			},
 			getPostMember (member_id) {
 				let members = this.$store.getters['channel/getMembers']
@@ -94,9 +101,6 @@
 					}
 				})
 				return fullname
-			},
-			handleInput () {
-				console.log('d')
 			}
 		}
 	}

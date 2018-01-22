@@ -25,13 +25,8 @@ export default {
         addPost: (state, post) => {
             state.posts.posts.push(post)
         },
-        deletePost: (state, idPost) => {
-            state.posts.posts.forEach((post, keyPost) => {
-                if (post._id === idPost) {
-                    state.posts.posts.splice(keyPost, 1)
-                    return true
-                }
-            })
+        deletePost: (state, post) => {
+            state.posts.posts.splice(state.posts.posts.indexOf(post), 1)
         },
         getPostMember: (state, member_id) => {
             state.members.forEach((member) => {
@@ -89,13 +84,13 @@ export default {
                 console.log(error)
             })
         },
-        deletePost: ({ commit }, credentials) => {
-            api.delete('/api/channels/' + credentials.idChannel + '/posts/' + credentials.idPost)
+        deletePost: ({ commit }, post) => {
+            api.delete('/api/channels/' + post.channel_id + '/posts/' + post._id)
                 .then((response) => {
-                    commit('deletePost', credentials.idPost)
+                    commit('deletePost', post)
                 }).catch((error) => {
-                console.log(error)
-            })
+                    console.log(error)
+                })
         },
         members: ({commit}) => {
             api.get('/api/members')
