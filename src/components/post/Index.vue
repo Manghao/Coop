@@ -64,7 +64,9 @@
 				locked: false,
 				configs: {
 					status: false,
-					spellChecker: false
+					spellChecker: false,
+					placeholder: 'Votre message...',
+					showIcons: ['strikethrough', 'code', 'table']
 				}
 			}
 		},
