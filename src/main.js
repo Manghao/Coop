@@ -23,6 +23,8 @@ Vue.filter('formatDate', (value) => {
 
 require('../node_modules/font-awesome/css/font-awesome.min.css')
 require('../node_modules/bootstrap/dist/css/bootstrap.min.css')
+require('../node_modules/simplemde/dist/simplemde.min.css')
+require('../node_modules/highlight.js/styles/atom-one-dark.css')
 
 require('../node_modules/jquery/dist/jquery.min.js')
 require('../node_modules/popper.js/dist/popper.min.js')
