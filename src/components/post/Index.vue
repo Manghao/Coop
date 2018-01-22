@@ -106,4 +106,9 @@
 	i.fa-times {
 		cursor: pointer;
 	}
+    .posts {
+        height: 75vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 </style>

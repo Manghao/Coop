@@ -31,9 +31,9 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-	if (to.name != 'login' && !store.getters['auth/getSession']) {
+	if (to.name !== 'login' && to.name !== 'registration' && !store.getters['auth/getSession']) {
 		next({ name: 'login' })
-	} else if (to.name == 'login' && store.getters['auth/getSession']) {
+	} else if (to.name === 'login' && store.getters['auth/getSession']) {
 		next({ name: 'index' })
 	} else {
 		next()
