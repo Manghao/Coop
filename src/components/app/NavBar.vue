@@ -12,7 +12,7 @@
 						<router-link class="nav-link" :to="{name: 'index'}">Accueil</router-link>
 					</li>
 					<li class="nav-item">
-						<a class="btn btn_channels text-light" @click="isActive = !isActive">Channels</a>
+						<a class="nav-link btn_channels text-light" @click="isActive = !isActive">Channels</a>
 					</li>
 				</ul>
 				<div class="btn-group mt-1 mb-1" role="group">
@@ -48,9 +48,11 @@
 	                <li class="nav-item" v-for="channel, key in channels" :key="channel._id">
 	                    <hr class="m-0" />
 	                    <router-link class="nav-link side-link" :class="[key === linkActive ? 'text-primary' : '']" :to="{ name: 'channel', params: { channel_id: channel._id }}">
-	                        <strong @click="changeChannel(key)">{{ channel.label }}</strong>
-	                        <br @click="changeChannel(key)" />
-	                        <small @click="changeChannel(key)">{{ channel.topic }}</small>
+	                    	<span @click="changeChannel(key)">
+	                    		<strong>{{ channel.label }}</strong>
+		                        <br />
+		                        <small>{{ channel.topic }}</small>
+	                    	</span>
 	                    </router-link>
 	                </li>
 	            </ul>
