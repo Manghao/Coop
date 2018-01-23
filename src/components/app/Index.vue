@@ -6,12 +6,18 @@
 			<h1 class="mt-3">Liste des channels</h1>
 			<hr />
 			<div class="row">
-				<div v-for="channel in channels" class="card m-3" style="width: 30%;">
+				<div v-for="channel, key in channels" class="card m-3 col-md-3 col-sm-8 col-lg-3 p-0 mx-auto">
+					<img class="card-img-top" src="http://via.placeholder.com/350x150" alt="Card image cap">
 					<div class="card-body">
-						<img class="card-img-top" src="http://via.placeholder.com/350x150" alt="Card image cap">
-						<router-link :to="{ name: 'channel', params: { channel_id: channel._id }}"><h5 class="card-title">{{channel.label}}</h5></router-link>
+						<router-link :to="{ name: 'channel', params: { channel_id: channel._id }}">
+							<h5 class="card-title">
+								<span @click="changeChannel(key)">{{channel.label}}</span>
+							</h5>
+						</router-link>
 						<h6 class="card-subtitle mb-2 text-muted">{{channel.topic}}</h6>
-						<router-link class="nav-link btn btn-primary btn-sm" :to="{ name: 'channel', params: { channel_id: channel._id }}">Ouvrir</router-link>
+						<router-link :to="{ name: 'channel', params: { channel_id: channel._id }}">
+							<span class="nav-link btn btn-primary btn-sm" @click="changeChannel(key)">Ouvrir</span>
+						</router-link>
 					</div>
 				</div>
 			</div>	
@@ -33,6 +39,11 @@ export default {
 				channels: 'channel/getChannels',
 			}
 		)
+	},
+	methods: {
+		changeChannel(key) {
+          	this.$store.dispatch('channel/setLinkActive', key)
+        }
 	}
 }
 </script>
