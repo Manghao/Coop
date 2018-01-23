@@ -5,7 +5,7 @@
 		<div class="container">
 			<h1 class="mt-3">Liste des channels</h1>
 			<hr />
-			<div class="row">
+			<div v-if="channels.length" class="row">
 				<div v-for="channel, key in channels" class="card m-3 col-md-3 col-sm-8 col-lg-3 p-0 mx-auto">
 					<img class="card-img-top" src="http://via.placeholder.com/350x150" alt="Card image cap">
 					<div class="card-body">
@@ -19,6 +19,11 @@
 							<span class="nav-link btn btn-primary btn-sm" @click="changeChannel(key)">Ouvrir</span>
 						</router-link>
 					</div>
+				</div>
+			</div>
+			<div v-else>
+				<div class="alert alert-info col-lg-12 col-sm-12 col-md-12">
+					Il n'y a pour le moment aucun channel.
 				</div>
 			</div>	
 		</div>
