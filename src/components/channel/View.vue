@@ -16,7 +16,7 @@
 							<p class="card-text pl-3 pr-3">
 								<span v-highlightjs>
 									<vue-markdown :highlight="true">{{ p.message }}</vue-markdown>
-								</span v-highlightjs>
+								</span>
 							</p>
 						</div>
 					</div>
@@ -77,12 +77,14 @@
 				}
 			}
 		},
-		/*updated: () => {
-			let channel_id = router.history.current.params.channel_id
-			store.dispatch('channel/channel', channel_id)
-		},*/
+        beforeRouteUpdate: (to, from, next) => {
+            store.dispatch('channel/members')
+            store.dispatch('channel/channel', to.params.channel_id)
+            next()
+        },
 		created: () => {
 			let channel_id = router.history.current.params.channel_id
+			store.dispatch('channel/members')
 			store.dispatch('channel/channel', channel_id)
 		},
 		computed: {
@@ -117,6 +119,7 @@
                 members.forEach((member) => {
                     if (member._id === member_id) {
                         fullname = member.fullname
+						return member.fullname
                     }
                 })
                 return fullname
