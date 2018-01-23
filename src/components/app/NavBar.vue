@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 			<a class="navbar-brand" href="/">Co'op</a>
 			<button @click="isActive ? isActive = !isActive : null" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -9,7 +9,7 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active">
-						<router-link class="nav-link" :to="{name: index}">Accueil</router-link>
+						<router-link class="nav-link" :to="{name: 'index'}">Accueil</router-link>
 					</li>
 					<li class="nav-item">
 						<a class="btn btn_channels text-light" @click="isActive = !isActive">Channels</a>
@@ -40,23 +40,22 @@
 					</div>
 				</div>
 			</div>
-
-			<transition name="slide-fade">
-	            <nav v-if="isActive" class="hidden-xs-down bg-faded sidebar">
-	                <button class="btn btn-secondary mb-1"><i class="fa fa-plus-circle"></i> Ajouter un channel</button>
-	                <ul class="nav nav-pills flex-column" v-for="channel, key in channels">
-	                    <li class="nav-item">
-	                        <hr class="m-0" />
-	                        <router-link class="nav-link" :class="[key === linkActive ? 'text-primary' : '']" :to="{ name: 'channel', params: { channel_id: channel._id }}">
-	                            <strong>{{ channel.label }}</strong>
-	                            <br />
-	                            <small>{{ channel.topic }}</small>
-	                        </router-link>
-	                    </li>
-	                </ul>
-	            </nav>
-	        </transition>
 		</nav>
+		<transition name="slide-fade">
+	        <nav v-if="isActive" class="hidden-xs-down bg-faded sidebar">
+	            <button class="btn btn-secondary mb-1"><i class="fa fa-plus-circle"></i> Ajouter un channel</button>
+	            <ul class="nav nav-pills flex-column">
+	                <li class="nav-item" v-for="channel, key in channels" :key="channel._id">
+	                    <hr class="m-0" />
+	                    <router-link class="nav-link side-link" :class="[key === linkActive ? 'text-primary' : '']" :to="{ name: 'channel', params: { channel_id: channel._id }}">
+	                        <strong @click="changeChannel(key)">{{ channel.label }}</strong>
+	                        <br @click="changeChannel(key)" />
+	                        <small @click="changeChannel(key)">{{ channel.topic }}</small>
+	                    </router-link>
+	                </li>
+	            </ul>
+	        </nav>
+	    </transition>
 	</div>
 </template>
 
@@ -65,11 +64,11 @@
 	import store from '@/store'
 
     export default {
-        data () {
-            return {
-                isActive: false
-            }
-        },
+    	data() {
+    		return {
+    			isActive: false,
+    		}
+    	},
         created: () => {
 			store.dispatch('channel/channels')
 		},
@@ -77,13 +76,17 @@
             ...mapGetters(
                 {
                     user: 'auth/getSession',
-                    channels: 'channel/getChannels'
+                    channels: 'channel/getChannels',
+                    linkActive: 'channel/getLinkActive'
                 }
             )
         },
         methods: {
             logout () {
                 this.$store.dispatch('auth/logout')
+            },
+            changeChannel(key) {
+            	this.$store.dispatch('channel/setLinkActive', key)
             }
         }
     }
@@ -95,15 +98,21 @@
     }
 
     .sidebar {
-        width: 210px;
-        height: 100vh;
-        position: absolute;
+    	width: 210px;
+    	height: 100vh;
+        position: fixed;
         left: 0;
+		top: 0;
+		bottom: 0;
         z-index: 1000;
         padding: 20px;
         overflow-x: hidden;
         overflow-y: auto;
         border-right: 1px solid #eee;
+    }
+
+    a.side-link {
+    	color: #000;
     }
 
     a.nav-link {

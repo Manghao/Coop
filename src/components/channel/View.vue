@@ -3,7 +3,6 @@
 		<navbar></navbar>
 
 		<div class="container">
-			<channels-list :isActive="isActive"></channels-list>
 			<br />
 			<div class="card">
 				<h4 class="card-header">
@@ -54,7 +53,6 @@
 	import markdownEditor from 'vue-simplemde/src/markdown-editor'
 	import VueMarkdown from 'vue-markdown'
 	import VueHighlightJS from 'vue-highlightjs'
-	import ChannelsIndex from '@/components/channel/Index'
 	import Navbar from '@/components/app/NavBar'
  
 	Vue.use(VueHighlightJS)
@@ -62,7 +60,6 @@
 
 	export default {
 		components: {
-			'channels-list': ChannelsIndex,
 			markdownEditor,
 			'vue-markdown': VueMarkdown,
 			navbar: Navbar
@@ -80,7 +77,7 @@
 				}
 			}
 		},
-		created: () => {
+		updated: () => {
 			let channel_id = router.history.current.params.channel_id
 			store.dispatch('channel/channel', channel_id)
 		},

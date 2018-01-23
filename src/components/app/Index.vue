@@ -29,15 +29,18 @@ export default {
 	},
 	computed: {
 		...mapGetters(
-		{
-			channels: 'channel/getChannels',
-		}
+			{
+				channels: 'channel/getChannels',
+			}
 		)
 	}
 }
 </script>
 
 <style>
+.container {
+	margin-top: 80px;
+}
 .slide-fade-enter-active {
 	transition: all .25s ease-in;
 }
