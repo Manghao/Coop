@@ -31,8 +31,8 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<p>{{ user.fullname }}</p>
-							<p>{{ user.email }}</p>
+							<p><strong>Nom et/ou prénom :</strong> {{ user.fullname }}</p>
+							<p><strong>Email :</strong> {{ user.email }}</p>
 						</div>
 						<div class="modal-footer">
 						  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -47,13 +47,13 @@
 	            <ul class="nav nav-pills flex-column">
 	                <li class="nav-item" v-for="channel, key in channels" :key="channel._id">
 	                    <hr class="m-0" />
-	                    <router-link class="nav-link side-link" :class="[key === linkActive ? 'text-primary' : '']" :to="{ name: 'channel', params: { channel_id: channel._id }}">
-	                    	<span @click="changeChannel(key)">
-	                    		<strong>{{ channel.label }}</strong>
-		                        <br />
-		                        <small>{{ channel.topic }}</small>
-	                    	</span>
-	                    </router-link>
+	                    <span @click="changeChannel(key)">
+		                    <router-link class="nav-link side-link" :class="[key === linkActive ? 'text-primary' : '']" :to="{ name: 'channel', params: { channel_id: channel._id }}">
+		                    	<strong>{{ channel.label }}</strong>
+			                    <br />
+			                    <small>{{ channel.topic }}</small>
+		                    </router-link>
+	                    </span>
 	                </li>
 	            </ul>
 	        </nav>
@@ -104,7 +104,7 @@
     	height: 100vh;
         position: fixed;
         left: 0;
-		top: 0;
+		top: 60px;
 		bottom: 0;
         z-index: 1000;
         padding: 20px;
