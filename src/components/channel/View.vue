@@ -81,6 +81,10 @@
 			let channel_id = router.history.current.params.channel_id
 			store.dispatch('channel/channel', channel_id)
 		},
+		created: () => {
+			let channel_id = router.history.current.params.channel_id
+			store.dispatch('channel/channel', channel_id)
+		},
 		computed: {
 			simplemde () {
 				return this.$refs.markdownEditor.simplemde
