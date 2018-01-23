@@ -12,7 +12,11 @@
 					<div class="card" v-for="p in channel.posts" :key="p._id">
 						<div class="card-body">
 							<i v-if="p.member_id == session._id" class="float-right fa fa-times text-danger" @click="deletePost(p)"></i>
-							<p><small>Par <strong>{{ getPostMember(p.member_id) }}</strong> le {{ p.updated_at | formatDate }}</small></p>
+							<p><small>Par <strong>
+								<a class="userFullName" data-toggle="modal" data-target="#userInfos" @click="memberInfos(getPostMember(p.member_id))">
+									{{ getPostMember(p.member_id).fullname }}
+								</a class="nav-link">
+							</strong> le {{ p.updated_at | formatDate }}</small></p>
 							<p class="card-text pl-3 pr-3">
 								<span v-highlightjs>
 									<vue-markdown :highlight="true">{{ p.message }}</vue-markdown>
@@ -39,6 +43,25 @@
 					v-bind:class="{ validate: $v.message.$dirty && !$v.message.$invalid }"></markdown-editor>
 				<button type="submit" v-bind:disabled="$v.$invalid || locked" class="btn btn-primary btn-block">Envoyer</button>
 			</form>
+		</div>
+
+		<div v-if="member" class="modal fade" id="userInfos" tabindex="1" role="dialog" aria-labelledby="userInfos" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="fullname">{{ member.fullname }}</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p><strong>Email :</strong> {{ member.email }}</p>
+					</div>
+					<div class="modal-footer">
+					  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -74,6 +97,10 @@
 					spellChecker: false,
 					placeholder: 'Votre message...',
 					showIcons: ['strikethrough', 'code', 'table']
+				},
+				member: {
+					fullname: null,
+					email: null
 				}
 			}
 		},
@@ -119,13 +146,16 @@
 			},
             getPostMember (member_id) {
                 let members = this.$store.getters['channel/getMembers']
-                let fullname = null;
-                members.forEach((member) => {
-                    if (member._id === member_id) {
-                        fullname = member.fullname
+                let memebr = null;
+                members.forEach((m) => {
+                    if (m._id === member_id) {
+                        memebr = m
                     }
                 })
-                return fullname
+                return memebr
+            },
+            memberInfos (member) {
+            	this.member = member
             }
 		}
 	}
@@ -140,8 +170,15 @@
         overflow-x: hidden;
         overflow-y: auto;
     }
-
     .container {
     	margin-top: 80px;
+    }
+    a.userFullName {
+    	cursor: pointer;
+    	color: #2c3e50;
+    	transition: color 0.2s ease-in;
+    }
+    a.userFullName:hover {
+    	color: #4e5c6b;
     }
 </style>
