@@ -8,7 +8,7 @@
 				<h4 class="card-header">
 					{{ channel.label }}
 				</h4>
-				<div class="card-body posts" v-if="channel.posts.length > 0">
+				<div class="card-body posts" v-if="channel.posts.length">
 					<div class="card" v-for="p in channel.posts" :key="p._id">
 						<div class="card-body">
 							<i v-if="p.member_id == session._id" class="float-right fa fa-times text-danger" @click="deletePost(p)"></i>
@@ -86,6 +86,7 @@
 			let channel_id = router.history.current.params.channel_id
 			store.dispatch('channel/members')
 			store.dispatch('channel/channel', channel_id)
+			store.dispatch('channel/members')
 		},
 		computed: {
 			simplemde () {
@@ -104,6 +105,11 @@
 				required,
 				minLenght: minLength(1)
 			}
+		},
+		beforeRouteUpdate: (to, from, next) => {
+			store.dispatch('channel/channel', to.params.channel_id)
+			store.dispatch('channel/members')
+		    next()
 		},
 		methods: {
 			addPost (credentials) {
@@ -136,5 +142,9 @@
         height: 75vh;
         overflow-x: hidden;
         overflow-y: auto;
+    }
+
+    .container {
+    	margin-top: 80px;
     }
 </style>
