@@ -72,7 +72,6 @@ export default {
                 })
         },
         addPost: ({ commit, state }, credentials) => {
-            console.log(credentials)
             api.post('/api/channels/' + state.current._id + '/posts', credentials)
                 .then((response) => {
                     commit('addPost', response.data)
