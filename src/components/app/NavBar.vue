@@ -31,8 +31,8 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<p>{{ user.fullname }}</p>
-							<p>{{ user.email }}</p>
+							<p><strong>Nom et/ou prénom :</strong> {{ user.fullname }}</p>
+							<p><strong>Email :</strong> {{ user.email }}</p>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -42,6 +42,7 @@
 			</div>
 		</nav>
 		<transition name="slide-fade">
+<<<<<<< HEAD
 			<nav v-if="isActive" class="hidden-xs-down bg-faded sidebar">
 				<button class="btn btn-secondary mb-1"><i class="fa fa-plus-circle"></i> Ajouter un channel</button>
 				<ul class="nav nav-pills flex-column">
