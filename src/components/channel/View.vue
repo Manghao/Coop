@@ -104,14 +104,15 @@
 				}
 			}
 		},
-		/*updated: () => {
-			let channel_id = router.history.current.params.channel_id
-			store.dispatch('channel/channel', channel_id)
-		},*/
+        beforeRouteUpdate: (to, from, next) => {
+            store.dispatch('channel/members')
+            store.dispatch('channel/channel', to.params.channel_id)
+            next()
+        },
 		created: () => {
 			let channel_id = router.history.current.params.channel_id
-			store.dispatch('channel/channel', channel_id)
 			store.dispatch('channel/members')
+			store.dispatch('channel/channel', channel_id)
 		},
 		computed: {
 			simplemde () {
@@ -131,11 +132,6 @@
 				minLenght: minLength(1)
 			}
 		},
-		beforeRouteUpdate: (to, from, next) => {
-			store.dispatch('channel/channel', to.params.channel_id)
-			store.dispatch('channel/members')
-		    next()
-		},
 		methods: {
 			addPost (credentials) {
 				this.$store.dispatch('channel/addPost', credentials)
@@ -146,13 +142,13 @@
 			},
             getPostMember (member_id) {
                 let members = this.$store.getters['channel/getMembers']
-                let memebr = null;
+                let member = null;
                 members.forEach((m) => {
                     if (m._id === member_id) {
-                        memebr = m
+                        member = m
                     }
                 })
-                return memebr
+                return member
             },
             memberInfos (member) {
             	this.member = member
@@ -165,14 +161,13 @@
 	i.fa-times {
 		cursor: pointer;
 	}
+
     .posts {
         height: 75vh;
         overflow-x: hidden;
         overflow-y: auto;
     }
-    .container {
-    	margin-top: 80px;
-    }
+
     a.userFullName {
     	cursor: pointer;
     	color: #2c3e50;

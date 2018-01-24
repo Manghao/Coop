@@ -54,21 +54,7 @@ export default {
 </script>
 
 <style>
-.container {
+/*.container {
 	margin-top: 80px;
-}
-.slide-fade-enter-active {
-	transition: all .25s ease-in;
-}
-.slide-fade-leave-active {
-	transition: all .25s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-.slide-fade-enter, .slide-fade-leave-to {
-	transform: translateX(-10px);
-	opacity: 0;
-}
-
-.btn_channels {
-	cursor: pointer;
-}
+}*/
 </style>
