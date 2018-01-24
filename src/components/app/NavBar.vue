@@ -42,7 +42,6 @@
 			</div>
 		</nav>
 		<transition name="slide-fade">
-<<<<<<< HEAD
 			<nav v-if="isActive" class="hidden-xs-down bg-faded sidebar">
 				<button class="btn btn-secondary mb-1"><i class="fa fa-plus-circle"></i> Ajouter un channel</button>
 				<ul class="nav nav-pills flex-column">

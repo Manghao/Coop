@@ -34,6 +34,9 @@ export default {
         },
         setCurrent: (state, data) => {
             state.current = data
+        },
+        setPost: (state, data) => {
+            state.current.posts.splice(state.current.posts.indexOf(data.post), 1, data.newPost)
         }
     },
     getters: {
@@ -98,6 +101,14 @@ export default {
         },
         getPostMember: ({ commit }, member_id) => {
             commit('getPostMember', member_id)
+        },
+        setPost: ({ commit }, credentials) => {
+            api.put('api/channels/' + credentials.post.channel_id + '/posts/' + credentials.post._id, { message: credentials.messageEdit })
+                .then((response) => {
+                    commit("setPost", { post: credentials.post, newPost: response.data })
+                }).catch((error) => {
+                    console.log(error)
+                })
         }
     }
 }
