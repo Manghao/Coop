@@ -86,7 +86,6 @@
 			let channel_id = router.history.current.params.channel_id
 			store.dispatch('channel/members')
 			store.dispatch('channel/channel', channel_id)
-			store.dispatch('channel/members')
 		},
 		computed: {
 			simplemde () {
@@ -105,11 +104,6 @@
 				required,
 				minLenght: minLength(1)
 			}
-		},
-		beforeRouteUpdate: (to, from, next) => {
-			store.dispatch('channel/channel', to.params.channel_id)
-			store.dispatch('channel/members')
-		    next()
 		},
 		methods: {
 			addPost (credentials) {
@@ -142,9 +136,5 @@
         height: 75vh;
         overflow-x: hidden;
         overflow-y: auto;
-    }
-
-    .container {
-    	margin-top: 80px;
     }
 </style>
