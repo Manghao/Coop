@@ -6,12 +6,12 @@
             <h1 class="mt-3">Mon compte</h1>
             <hr />
             <div class="row">
-                <div class="card m-3 col-5">
+                <div class="card m-3 col-8">
                     <div class="card-body">
-                        <span class="float-right">
-                            <i class="fa fa-pencil-square-o mr-1"></i>
-                            <i class="fa fa-times text-danger"></i>
-                        </span>
+                        <div class="float-right">
+                            <button class="btn btn-primary btn-sm btn-block">Modifier</button>
+                            <button class="btn btn-danger btn-sm btn-block" @click="deleteAccount(session)">Supprimer</button>
+                        </div>
                         <p class="card-text"><strong>Nom et/ou prénom :</strong> {{ session.fullname }}</p>
                         <p class="card-text"><strong>Email :</strong> {{ session.email }}</p>
                     </div>
@@ -52,7 +52,10 @@
             )
         },
         methods: {
-
+            deleteAccount (member) {
+                this.$store.dispatch('auth/logout')
+                this.$store.dispatch('auth/deleteAccount', member)
+            }
         }
     }
 </script>
