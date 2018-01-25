@@ -5,7 +5,7 @@
 		<div class="container">
 			<h1 class="mt-3">Liste des channels</h1>
 			<hr />
-			<div v-if="channels.length" class="row">
+			<div v-if="channels" class="row">
 				<div v-for="channel, key in channels" class="card m-3 col-md-3 col-sm-8 col-lg-3 p-0 mx-auto">
 					<img class="card-img-top" src="http://via.placeholder.com/350x150" alt="Card image cap">
 					<div class="card-body">
