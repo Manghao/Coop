@@ -59,8 +59,15 @@ export default {
                     if (response.data.message) {
                         commit('logout')
                     }
+                }).catch((error) => {
+                    console.log(error)
                 })
-                .catch((error) => {
+        },
+        deleteAccount: ({ commit }, member) => {
+            api.delete('/api/members/' + member._id)
+                .then((response) => {
+                    //console.log(response)
+                }).catch((error) => {
                     console.log(error)
                 })
         }

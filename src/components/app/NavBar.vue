@@ -11,6 +11,9 @@
 					<li class="nav-item active">
 						<router-link class="nav-link" :to="{name: 'index'}">Accueil</router-link>
 					</li>
+					<li class="nav-item active">
+						<router-link class="nav-link" :to="{name: 'members'}">Membres</router-link>
+					</li>
 					<li class="nav-item">
 						<a class="nav-link btn_channels text-light" @click="isActive = !isActive">Channels</a>
 					</li>

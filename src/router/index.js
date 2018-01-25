@@ -5,6 +5,7 @@ import Login from '@/components/user/Login'
 import Register from '@/components/user/Register'
 import Index from '@/components/app/Index'
 import Channel from '@/components/channel/View'
+import Members from '@/components/member/Members'
 
 import store from '@/store/index'
 
@@ -32,6 +33,11 @@ const router = new Router({
 			name: 'channel',
 			path: '/:channel_id',
 			component: Channel
+		},
+		{
+			name: 'members',
+			path: '/members',
+			component: Members
 		}
 	]
 })

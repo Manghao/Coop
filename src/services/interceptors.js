@@ -20,7 +20,7 @@ export default {
 		api.interceptors.response.use(function (response) {
 			return response
 		}, function (error) {
-			if (error.response && error.response.status == 401) {
+			if (error.response && error.response.status === 401) {
 				store.dispatch('auth/logout', !error.response.data.error.indexOf('wrong token'))
 				options.router.push({ name: 'login' })
 			}
