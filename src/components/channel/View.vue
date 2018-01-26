@@ -2,31 +2,31 @@
 	<div>
 		<navbar></navbar>
 
-		<div class="container">
-			<br />
+		<div class="chat">
 			<div class="card" v-if="channel">
 				<h4 class="card-header">
 					{{ channel.label }}
 				</h4>
 				<div class="card-body posts" v-if="channel.posts.length">
-					<div class="card" v-for="p in channel.posts" :key="p._id">
-						<div class="card-body">
+					<div class="card border-0 rounded-0" v-for="p in channel.posts" :key="p._id">
+						<div class="card-body p-2">
 							<span v-if="p.member_id === session._id && !edit" class="float-right">
 								<i class="fa fa-pencil-square-o mr-1" @click="edit = p._id"></i>
 								<i class="fa fa-times text-danger" @click="deletePost(p)"></i>
 							</span>
 
 							<p><small>Par <strong>
-								<a class="userFullName" data-toggle="modal" data-target="#userInfos" @click="memberInfos(getPostMember(p.member_id))">
+								<a class="userFullName" data-toggle="modal" data-target="#userInfos" @click="memberInfos(getPostMember(p.member_id))" v-if="getPostMember(p.member_id)">
 									{{ getPostMember(p.member_id).fullname }}
 								</a>
+								<span v-else class="text-danger">Membre supprimé</span>
 							</strong> le {{ p.updated_at | formatDate }}</small></p>
 							<form v-on:submit.prevent="setPost({post: p, messageEdit})" v-if="edit === p._id" class="input-group">
 								<input class="form-control rounded mr-2" type="text" v-model="messageEdit" v-on:input="$v.message.$touch"
 									   v-bind:class="{ validate: $v.messageEdit.$dirty && !$v.messageEdit.$invalid }">
 								<button type="submit" class="btn btn-primary">Edit</button>
 							</form>
-							<p class="card-text pl-3 pr-3" v-else>
+							<p class="card-text pl-5 pr-5" v-else>
 								<span v-highlightjs :key="p.message">
 									<vue-markdown :highlight="true">{{ p.message }}</vue-markdown>
 								</span>
@@ -40,9 +40,9 @@
 					</div>
 				</div>
 			</div>
-			<form v-on:submit.prevent="addPost({message})" class="mt-3 mb-3">
+			<form v-on:submit.prevent="addPost({message})" class="form-markdown">
 				<markdown-editor
-						class="mb-3"
+						class="mb-1"
 						v-model="message"
 						:configs="configs"
 						id="message"
@@ -50,7 +50,7 @@
 						ref="markdownEditor"
 						v-on:input="$v.message.$touch"
 						v-bind:class="{ validate: $v.message.$dirty && !$v.message.$invalid }"></markdown-editor>
-				<button type="submit" v-bind:disabled="$v.message.$invalid || locked" class="btn btn-primary btn-block">Envoyer</button>
+				<button type="submit" v-bind:disabled="$v.message.$invalid || locked" class="btn btn-primary btn-sm btn-send">Envoyer</button>
 			</form>
 		</div>
 
@@ -156,9 +156,8 @@
                 this.$store.dispatch('channel/deletePost', post)
             },
             getPostMember (member_id) {
-                let members = this.$store.getters['channel/getMembers']
                 let member = null;
-                members.forEach((m) => {
+                this.members.forEach((m) => {
                     if (m._id === member_id) {
                         member = m
                     }
@@ -177,15 +176,33 @@
     }
 </script>
 
-<style scoped>
+<style>
 	i.fa-times, i.fa-pencil-square-o {
 		cursor: pointer;
 	}
 
+	.chat {
+		position: fixed;
+		width: 100%;
+		height: calc(100% - 60px);
+	}
+
+	.chat > .card {
+		height: calc(100% - 150px);
+	}
+
 	.posts {
-		height: 75vh;
 		overflow-x: hidden;
 		overflow-y: auto;
+	}
+
+	.posts > .card:nth-child(1n+2) > .card-body {
+		border-top: 1px solid lightgrey;
+	}
+
+	.btn-send {
+		width: 70px;
+		margin: 0 calc((100% - 70px) / 2);
 	}
 
 	a.userFullName {
@@ -195,5 +212,16 @@
 	}
 	a.userFullName:hover {
 		color: #4e5c6b;
+	}
+	.form-markdown {
+		bottom: 0;
+		width: 100%;
+		height: 150px;
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+	.markdown-editor .CodeMirror, .markdown-editor .CodeMirror-scroll {
+		min-height: 50px;
+		max-height: 60px;
 	}
 </style>
