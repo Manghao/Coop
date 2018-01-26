@@ -7,7 +7,7 @@
 				<h4 class="card-header">
 					{{ channel.label }}
 				</h4>
-				<div class="card-body posts" v-if="channel.posts.length">
+				<div class="card-body posts" v-if="channel.posts.length" v-chat-scroll>
 					<div class="card border-0 rounded-0" v-for="p in channel.posts" :key="p._id">
 						<div class="card-body p-2">
 							<span v-if="p.member_id === session._id && !edit" class="float-right">
@@ -22,8 +22,7 @@
 								<span v-else class="text-danger">Membre supprimé</span>
 							</strong> le {{ p.updated_at | formatDate }}</small></p>
 							<form v-on:submit.prevent="setPost({post: p, messageEdit})" v-if="edit === p._id" class="input-group">
-								<input class="form-control rounded mr-2" type="text" v-model="messageEdit" v-on:input="$v.message.$touch"
-									   v-bind:class="{ validate: $v.messageEdit.$dirty && !$v.messageEdit.$invalid }">
+								<input class="form-control rounded mr-2" type="text" v-model="messageEdit" v-on:input="$v.message.$touch" v-bind:class="{ validate: $v.messageEdit.$dirty && !$v.messageEdit.$invalid }">
 								<button type="submit" class="btn btn-primary">Edit</button>
 							</form>
 							<p class="card-text pl-5 pr-5" v-else>
