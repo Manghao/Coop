@@ -12,7 +12,7 @@
 								<div class="input-group-prepend">
 									<div class="input-group-text">@</div>
 								</div>
-								<input type="email" class="form-control" id="email" placeholder="Email"
+								<input type="email" class="form-control" id="email" placeholder="Email" autofocus
 									   v-on:input="$v.email.$touch"
 									   v-bind:class="{invalid: $v.email.$error, validate: $v.email.$dirty
 										&& !$v.email.$invalid}"
