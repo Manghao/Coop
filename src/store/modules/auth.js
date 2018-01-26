@@ -22,8 +22,8 @@ export default {
             })
         },
         logout: (state) => {
-            ls.remove('auth')
             state.session = null
+            ls.remove('token')
             console.log('Déconnexion réussie !')
             router.push({
                 name: 'login'
@@ -56,9 +56,7 @@ export default {
         logout: ({ commit }) => {
             api.delete('/api/members/signout')
                 .then((response) => {
-                    if (response.data.message) {
-                        commit('logout')
-                    }
+                    commit('logout')
                 }).catch((error) => {
                     console.log(error)
                 })
@@ -66,7 +64,7 @@ export default {
         deleteAccount: ({ commit }, member) => {
             api.delete('/api/members/' + member._id)
                 .then((response) => {
-                    //console.log(response)
+                    console.log(response)
                 }).catch((error) => {
                     console.log(error)
                 })

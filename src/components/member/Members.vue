@@ -54,8 +54,8 @@
         },
         methods: {
             deleteAccount (member) {
-                this.$store.dispatch('auth/logout')
                 this.$store.dispatch('auth/deleteAccount', member)
+                this.$store.dispatch('auth/logout')
             }
         }
     }

@@ -12,7 +12,7 @@
 								<div class="input-group-prepend">
 									<div class="input-group-text"><i class="fa fa-user"></i></div>
 								</div>
-								<input type="text" class="form-control" id="fullname" placeholder="Nom et/ou Prénom"
+								<input type="text" class="form-control" id="fullname" placeholder="Nom et/ou Prénom" autofocus
 									   v-on:input="$v.fullname.$touch"
 									   v-bind:class="{invalid: $v.fullname.$error, validate: $v.fullname.$dirty
 										&& !$v.fullname.$invalid}"
