@@ -19,7 +19,7 @@
 									   v-model="email"
 									   v-bind:disabled="locked">
 							</div>
-							<div v-if="$v.email.$error" class="red-text error  mb-3">
+							<div v-if="$v.email.$error" class="red-text error mb-3">
 								Veuillez saisir un email valide !
 							</div>
 

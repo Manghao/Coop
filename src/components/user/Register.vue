@@ -19,7 +19,7 @@
 									   v-model="fullname"
 									   v-bind:disabled="locked">
 							</div>
-							<div v-if="$v.email.$error" class="red-text error mb-3">
+							<div v-if="$v.fullname.$error" class="red-text error mb-3">
 								Veuillez saisir un nom et/ou prénom valide !
 							</div>
 
@@ -60,14 +60,14 @@
 								<div class="input-group-prepend">
 									<div class="input-group-text"><i class="fa fa-key"></i></div>
 								</div>
-								<input type="password" class="form-control" id="password" placeholder="Mot de passe"
-									   v-on:input="$v.passwordr.$touch"
-									   v-bind:class="{invalid: $v.passwordr.$error, validate: $v.passwordr.$dirty
-										&& !$v.passwordr.$invalid}"
-									   v-model="passwordr"
+								<input type="password" class="form-control" id="passwordConfirm" placeholder="Mot de passe"
+									   v-on:input="$v.passwordConfirm.$touch"
+									   v-bind:class="{invalid: $v.passwordConfirm.$error, validate: $v.passwordConfirm.$dirty
+										&& !$v.passwordConfirm.$invalid}"
+									   v-model="passwordConfirm"
 									   v-bind:disabled="locked">
 							</div>
-							<div v-if="$v.passwordr.$error" class="red-text error mb-3">
+							<div v-if="$v.passwordConfirm.$error" class="red-text error mb-3">
 								Veuillez saisir un mot de passe valide !
 							</div>
 							<div class="text-center mt-3">
@@ -92,7 +92,7 @@
                 fullname: '',
                 email: '',
                 password: '',
-                passwordr: '',
+                passwordConfirm: '',
                 locked: false
             }
         },
@@ -109,7 +109,7 @@
                 required,
                 minLenght: minLength(6)
             },
-            passwordr: {
+            passwordConfirm: {
                 sameAsPassword: sameAs('password')
             }
         },

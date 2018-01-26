@@ -4,21 +4,30 @@
 
 		<div class="container">
 			<br />
-			<div class="card">
+			<div class="card" v-if="channel">
 				<h4 class="card-header">
 					{{ channel.label }}
 				</h4>
 				<div class="card-body posts" v-if="channel.posts.length">
 					<div class="card" v-for="p in channel.posts" :key="p._id">
 						<div class="card-body">
-							<i v-if="p.member_id == session._id" class="float-right fa fa-times text-danger" @click="deletePost(p)"></i>
+							<span v-if="p.member_id === session._id && !edit" class="float-right">
+								<i class="fa fa-pencil-square-o mr-1" @click="edit = p._id"></i>
+								<i class="fa fa-times text-danger" @click="deletePost(p)"></i>
+							</span>
+
 							<p><small>Par <strong>
 								<a class="userFullName" data-toggle="modal" data-target="#userInfos" @click="memberInfos(getPostMember(p.member_id))">
 									{{ getPostMember(p.member_id).fullname }}
-								</a class="nav-link">
+								</a>
 							</strong> le {{ p.updated_at | formatDate }}</small></p>
-							<p class="card-text pl-3 pr-3">
-								<span v-highlightjs>
+							<form v-on:submit.prevent="setPost({post: p, messageEdit})" v-if="edit === p._id" class="input-group">
+								<input class="form-control rounded mr-2" type="text" v-model="messageEdit" v-on:input="$v.message.$touch"
+									   v-bind:class="{ validate: $v.messageEdit.$dirty && !$v.messageEdit.$invalid }">
+								<button type="submit" class="btn btn-primary">Edit</button>
+							</form>
+							<p class="card-text pl-3 pr-3" v-else>
+								<span v-highlightjs :key="p.message">
 									<vue-markdown :highlight="true">{{ p.message }}</vue-markdown>
 								</span>
 							</p>
@@ -33,15 +42,15 @@
 			</div>
 			<form v-on:submit.prevent="addPost({message})" class="mt-3 mb-3">
 				<markdown-editor
-					class="mb-3"
-					v-model="message" 
-					:configs="configs" 
-					id="message" 
-					:highlight="true"
-					ref="markdownEditor"
-					v-on:input="$v.message.$touch"
-					v-bind:class="{ validate: $v.message.$dirty && !$v.message.$invalid }"></markdown-editor>
-				<button type="submit" v-bind:disabled="$v.$invalid || locked" class="btn btn-primary btn-block">Envoyer</button>
+						class="mb-3"
+						v-model="message"
+						:configs="configs"
+						id="message"
+						:highlight="true"
+						ref="markdownEditor"
+						v-on:input="$v.message.$touch"
+						v-bind:class="{ validate: $v.message.$dirty && !$v.message.$invalid }"></markdown-editor>
+				<button type="submit" v-bind:disabled="$v.message.$invalid || locked" class="btn btn-primary btn-block">Envoyer</button>
 			</form>
 		</div>
 
@@ -58,7 +67,7 @@
 						<p><strong>Email :</strong> {{ member.email }}</p>
 					</div>
 					<div class="modal-footer">
-					  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
 					</div>
 				</div>
 			</div>
@@ -67,118 +76,124 @@
 </template>
 
 <script>
-	import router from '@/router'
-	import store from '@/store'
-	import { mapGetters, mapActions } from 'vuex'
-	import { required, minLength } from 'vuelidate/lib/validators'
-	import Vue from 'vue'
-	import VueSimplemde from 'vue-simplemde'
-	import markdownEditor from 'vue-simplemde/src/markdown-editor'
-	import VueMarkdown from 'vue-markdown'
-	import VueHighlightJS from 'vue-highlightjs'
-	import Navbar from '@/components/app/NavBar'
- 
-	Vue.use(VueHighlightJS)
-	Vue.use(VueSimplemde)
+    import router from '@/router'
+    import store from '@/store'
+    import { mapGetters, mapActions } from 'vuex'
+    import { required, minLength } from 'vuelidate/lib/validators'
+    import Vue from 'vue'
+    import VueSimplemde from 'vue-simplemde'
+    import markdownEditor from 'vue-simplemde/src/markdown-editor'
+    import VueMarkdown from 'vue-markdown'
+    import VueHighlightJS from 'vue-highlightjs'
+    import Navbar from '@/components/app/NavBar'
 
-	export default {
-		components: {
-			markdownEditor,
-			'vue-markdown': VueMarkdown,
-			navbar: Navbar
-		},
-		data() {
-			return {
-				isActive: false,
-				message: '',
-				locked: false,
-				configs: {
-					status: false,
-					spellChecker: false,
-					placeholder: 'Votre message...',
-					showIcons: ['strikethrough', 'code', 'table']
-				},
-				member: {
-					fullname: null,
-					email: null
-				}
-			}
-		},
-		/*updated: () => {
-			let channel_id = router.history.current.params.channel_id
-			store.dispatch('channel/channel', channel_id)
-		},*/
-		created: () => {
-			let channel_id = router.history.current.params.channel_id
-			store.dispatch('channel/channel', channel_id)
-			store.dispatch('channel/members')
-		},
-		computed: {
-			simplemde () {
-				return this.$refs.markdownEditor.simplemde
-			},
-			...mapGetters(
-				{
-					channel: 'channel/getChannel',
-					session: 'auth/getSession',
-					members: 'channel/getMembers'
-				}
-			)
-		},
-		validations: {
-			message: {
-				required,
-				minLenght: minLength(1)
-			}
-		},
-		beforeRouteUpdate: (to, from, next) => {
-			store.dispatch('channel/channel', to.params.channel_id)
-			store.dispatch('channel/members')
-		    next()
-		},
-		methods: {
-			addPost (credentials) {
-				this.$store.dispatch('channel/addPost', credentials)
-				this._data.message = ''
-			},
-			deletePost (post) {
-				this.$store.dispatch('channel/deletePost', post)
-			},
+    Vue.use(VueHighlightJS)
+    Vue.use(VueSimplemde)
+
+    export default {
+        components: {
+            markdownEditor,
+            'vue-markdown': VueMarkdown,
+            navbar: Navbar
+        },
+        data() {
+            return {
+                isActive: false,
+                message: '',
+                messageEdit: '',
+                locked: false,
+                configs: {
+                    status: false,
+                    spellChecker: false,
+                    placeholder: 'Votre message...',
+                    showIcons: ['strikethrough', 'code', 'table']
+                },
+                member: {
+                    fullname: null,
+                    email: null
+                },
+                edit: null
+            }
+        },
+        beforeRouteUpdate: (to, from, next) => {
+            store.dispatch('channel/members')
+            store.dispatch('channel/channel', to.params.channel_id)
+            next()
+        },
+        created: () => {
+            let channel_id = router.history.current.params.channel_id
+            store.dispatch('channel/members')
+            store.dispatch('channel/channel', channel_id)
+        },
+        computed: {
+            simplemde () {
+                return this.$refs.markdownEditor.simplemde
+            },
+            ...mapGetters(
+                {
+                    channel: 'channel/getChannel',
+                    session: 'auth/getSession',
+                    members: 'channel/getMembers'
+                }
+            )
+        },
+        validations: {
+            message: {
+                required,
+                minLenght: minLength(1)
+            },
+            messageEdit: {
+                required,
+                minLenght: minLength(1)
+            }
+        },
+        methods: {
+            addPost (credentials) {
+                this.$store.dispatch('channel/addPost', credentials)
+                this._data.message = ''
+            },
+            deletePost (post) {
+                this.$store.dispatch('channel/deletePost', post)
+            },
             getPostMember (member_id) {
                 let members = this.$store.getters['channel/getMembers']
-                let memebr = null;
+                let member = null;
                 members.forEach((m) => {
                     if (m._id === member_id) {
-                        memebr = m
+                        member = m
                     }
                 })
-                return memebr
+                return member
             },
             memberInfos (member) {
-            	this.member = member
+                this.member = member
+            },
+            setPost (credentials) {
+                this.$store.dispatch('channel/setPost', credentials)
+                this._data.messageEdit = ''
+                this._data.edit = null
             }
-		}
-	}
+        }
+    }
 </script>
 
 <style scoped>
-	i.fa-times {
+	i.fa-times, i.fa-pencil-square-o {
 		cursor: pointer;
 	}
-    .posts {
-        height: 75vh;
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-    .container {
-    	margin-top: 80px;
-    }
-    a.userFullName {
-    	cursor: pointer;
-    	color: #2c3e50;
-    	transition: color 0.2s ease-in;
-    }
-    a.userFullName:hover {
-    	color: #4e5c6b;
-    }
+
+	.posts {
+		height: 75vh;
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+
+	a.userFullName {
+		cursor: pointer;
+		color: #2c3e50;
+		transition: color 0.2s ease-in;
+	}
+	a.userFullName:hover {
+		color: #4e5c6b;
+	}
 </style>
