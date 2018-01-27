@@ -7,7 +7,7 @@
 					<div class="card-header">Inscription</div>
 					<div class="card-body">
 						<form v-on:submit.prevent="registration({fullname, email, password})">
-							<label for="email">Nom et/ou Prénom :</label>
+							<label for="fullname">Nom et/ou Prénom :</label>
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text"><i class="fa fa-user"></i></div>
