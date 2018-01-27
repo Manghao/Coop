@@ -21,8 +21,8 @@
 								</a>
 								<span v-else class="text-danger">Membre supprimé</span>
 							</strong> le {{ p.updated_at | formatDate }}</small></p>
-							<form v-on:submit.prevent="setPost({post: p, messageEdit})" v-if="edit === p._id" class="input-group">
-								<input class="form-control rounded mr-2" type="text" v-model="messageEdit" v-on:input="$v.message.$touch" v-bind:class="{ validate: $v.messageEdit.$dirty && !$v.messageEdit.$invalid }">
+							<form v-on:submit.prevent="setPost(p)" v-if="edit === p._id" class="input-group">
+								<input :id="'p-' + p._id" class="form-control rounded mr-2" type="text" :value="p.message" autofocus required>
 								<button type="submit" class="btn btn-primary">Edit</button>
 							</form>
 							<p class="card-text pl-5 pr-5" v-else>
@@ -140,10 +140,6 @@
             message: {
                 required,
                 minLenght: minLength(1)
-            },
-            messageEdit: {
-                required,
-                minLenght: minLength(1)
             }
         },
         methods: {
@@ -166,7 +162,9 @@
             memberInfos (member) {
                 this.member = member
             },
-            setPost (credentials) {
+            setPost (post) {
+                let messageEdit = this.$el.querySelector('input#p-' + post._id).value
+                let credentials = { post, messageEdit }
                 this.$store.dispatch('channel/setPost', credentials)
                 this._data.messageEdit = ''
                 this._data.edit = null
