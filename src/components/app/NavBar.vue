@@ -46,7 +46,7 @@
 		</nav>
 		<transition name="slide-fade">
 			<nav v-if="isActive" class="hidden-xs-down bg-faded sidebar">
-				<button class="btn btn-secondary mb-1"><i class="fa fa-plus-circle"></i> Ajouter un channel</button>
+				<router-link class="btn btn-secondary mb-1" :to="{ name: 'addChannel' }"><i class="fa fa-plus-circle"></i> Ajouter un channel</router-link>
 				<ul class="nav nav-pills flex-column">
 					<li class="nav-item" v-for="channel, key in channels" :key="channel._id">
 						<hr class="m-0" />
