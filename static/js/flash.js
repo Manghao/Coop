@@ -2,31 +2,48 @@ window.Flash = (() => {
 
 	let module = {}
 
-	module.flash = []
+	module.flash = 0
 
 	module.success = (msg, delay) => {
+		module.flash = (module.flash + 1)
 		module.toast(msg, 'success', delay)
 	}
 
 	module.error = (msg, delay) => {
+		module.flash = (module.flash + 1)
 		module.toast(msg, 'error', delay)
 	}
 
 	module.info = (msg, delay) => {
+		module.flash = (module.flash + 1)
 		module.toast(msg, 'info', delay)
 	}
 
 	module.toast = (msg, type, delay) => {
+		if (module.flash >= 1) {
+			$('#flash').toggle()
+		}
+
 		let uuid = module.uuid()
 		let flash = $(`<div id="flash-${uuid}" class="flash flash-${type}">${msg}</div>`)
 			.append('<span class="close-flash"><i class="fa fa-close"></i></span>')
 			.on('click', (e) => {
 				$(`#flash-${uuid}`).remove()
+				module.flash = (module.flash - 1)
+				if (module.flash <= 0) {
+					module.flash = 0
+					$('#flash').hide()
+				}
 			})
 			.fadeIn('slow')
 			.delay(delay)
 			.fadeOut('slow', () => {
+				module.flash = (module.flash - 1)
 				$(`#flash-${uuid}`).remove()
+				if (module.flash <= 0) {
+					module.flash = 0
+					$('#flash').hide()
+				}
 			})
 
 		$('#flash').append(flash)
