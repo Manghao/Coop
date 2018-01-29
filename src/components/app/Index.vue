@@ -31,34 +31,22 @@
 				</div>
 			</div>
 
-			<div class="modal fade" id="editChannel" tabindex="1" role="dialog" aria-labelledby="editChannel" aria-hidden="true" ref="modal">
-				<form v-on:submit.prevent="setChannel(editChannel)">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="fullname">Editer {{ editChannel.label }}</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<div class="form-group">
-									<label for="channel-label">Label :</label>
-									<input id="channel-label" class="form-control" :value="editChannel.label" autofocus required>
-								</div>
-								<div class="form-group">
-									<label for="channel-topic">Topic :</label>
-									<input id="channel-topic" class="form-control" :value="editChannel.topic" required>
-								</div>
-								<div class="modal-footer">
-									<button type="submit" class="btn btn-primary">Update</button>
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-								</div>
-							</div>
-						</div>
+			<form v-on:submit.prevent="setChannel(editChannel)">
+				<b-modal ref="modal" :title="'Editer ' + editChannel.label">
+					<div class="form-group">
+						<label for="channel-label">Label :</label>
+						<input id="channel-label" class="form-control" :value="editChannel.label" autofocus required>
 					</div>
-				</form>
-			</div>
+					<div>
+						<label for="channel-topic">Topic :</label>
+						<input id="channel-topic" class="form-control" :value="editChannel.topic" required>
+					</div>
+					<div slot="modal-footer">
+						<button type="submit" class="btn btn-primary">Update</button>
+						<button type="button" class="btn btn-secondary" @click="closeModal()">Fermer</button>
+					</div>
+				</b-modal>
+			</form>
 		</div>
 	</div>
 </template>
@@ -93,25 +81,27 @@
                 this._data.editChannel.oldChannel = channel
                 this._data.editChannel.label = channel.label
                 this._data.editChannel.topic = channel.topic
+                this.$refs.modal.show()
             },
             changeChannel(key) {
                 this.$store.dispatch('channel/setLinkActive', key)
             },
             setChannel(editChannel) {
                 let label_value = this.$el.querySelector('input#channel-label').value
-				let topic_value = this.$el.querySelector('input#channel-topic').value
-				this.$store.dispatch('channel/setChannel', {
-				    oldChannel: editChannel.oldChannel,
-				    label: label_value,
-					topic: topic_value
-				})
-				this.$refs.modal.className = 'modal fade'
-                this.$refs.modal.style.display = 'none'
-				document.querySelector('.modal-backdrop').remove()
+                let topic_value = this.$el.querySelector('input#channel-topic').value
+                this.$store.dispatch('channel/setChannel', {
+                    oldChannel: editChannel.oldChannel,
+                    label: label_value,
+                    topic: topic_value
+                })
+				this.closeModal()
             },
             deleteChannel(channel) {
                 this.$store.dispatch('channel/deleteChannel', channel)
-            }
+            },
+			closeModal() {
+                this.$refs.modal.hide()
+			}
         }
     }
 </script>
