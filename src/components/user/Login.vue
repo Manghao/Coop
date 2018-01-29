@@ -79,9 +79,6 @@
 </script>
 
 <style>
-	body {
-		background-color: #eeeeee;
-	}
 	.error, .infos-form {
 		font-size: 12px;
 		color: red;

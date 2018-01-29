@@ -8,7 +8,10 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "win": "electron-packager . Coop --overwrite --asar --platform=win32 --arch=all --icon=static/icons/win/icon.ico --prune=true --out=release-builds",
+    "mac": "electron-packager . Coop --overwrite --asar --platform=darwin --arch=all --icon=static/icons/mac/icon.icns --prune=true --out=release-builds",
+    "linux": "electron-packager . Coop --overwrite --asar --platform=linux --arch=all --icon=static/icons/linux/icon.png --prune=true --out=release-builds"
   },
   "dependencies": {
     "axios": "^0.17.1",
