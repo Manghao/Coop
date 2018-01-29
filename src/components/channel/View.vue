@@ -218,7 +218,7 @@
 		overflow-y: auto;
 	}
 	.markdown-editor .CodeMirror, .markdown-editor .CodeMirror-scroll {
-		min-height: 50px;
-		max-height: 60px;
+		min-height: 100%;
+		max-height: 100%;
 	}
 </style>
