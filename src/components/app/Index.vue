@@ -45,13 +45,6 @@ export default {
 			}
 		)
 	},
-	created: () => {
-		Flash.info('dd', 3000)
-		Flash.info('dd', 3000)
-		Flash.info('dd', 3000)
-		Flash.info('dd', 3000)
-		Flash.info('dd', 3000)
-	},
 	methods: {
 		changeChannel(key) {
           	this.$store.dispatch('channel/setLinkActive', key)
