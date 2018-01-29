@@ -39,10 +39,13 @@ export default {
         registration: ({ commit }, credentials) => {
             api.post('/api/members', credentials)
                 .then((response) => {
+                    Flash.success('Inscription réussie !', 3000)
                     console.log('Inscription réussie !')
 					commit('registration')
                 }).catch((error) => {
-                	console.log(error.response.data.error[0][0])
+                    let err = error.response.data.error[0][0]
+                    Flash.error(err, 3000)
+                	console.log(err)
                 })
         },
         login: ({ commit }, credentials) => {
@@ -50,13 +53,16 @@ export default {
                 .then((response) => {
                     commit('signin', response.data)
                 }).catch((error) => {
-                	console.log(error)
+                    let err = error.response.data.error
+                    Flash.error(err, 3000)
+                	console.log(err)
                 })
         },
         logout: ({ commit }) => {
             api.delete('/api/members/signout')
                 .then((response) => {
                     commit('logout')
+                    Flash.info('Vous êtes déconnecté', 3000)
                 }).catch((error) => {
                     console.log(error)
                 })
@@ -65,6 +71,7 @@ export default {
             api.delete('/api/members/' + member._id)
                 .then((response) => {
                     console.log(response)
+                    Flash.success(`${member.fullname} supprimé`, 3000)
                 }).catch((error) => {
                     console.log(error)
                 })

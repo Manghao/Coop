@@ -22,7 +22,7 @@
 								<span v-else class="text-danger">Membre supprimé</span>
 							</strong> le {{ p.updated_at | formatDate }}</small></p>
 							<form v-on:submit.prevent="setPost(p)" v-if="edit === p._id" class="input-group">
-								<input :id="'p-' + p._id" class="form-control rounded mr-2" type="text" :value="p.message" autofocus required>
+								<textarea :id="'p-' + p._id" class="form-control rounded mr-2" type="text" :value="p.message" autofocus required></textarea>
 								<button type="submit" class="btn btn-primary">Edit</button>
 							</form>
 							<p class="card-text pl-5 pr-5" v-else>
@@ -218,7 +218,7 @@
 		overflow-y: auto;
 	}
 	.markdown-editor .CodeMirror, .markdown-editor .CodeMirror-scroll {
-		min-height: 50px;
-		max-height: 60px;
+		min-height: 100%;
+		max-height: 100%;
 	}
 </style>
