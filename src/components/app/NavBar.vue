@@ -9,10 +9,10 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active">
-						<router-link class="nav-link" :to="{name: 'index'}">Accueil</router-link>
+						<router-link class="nav-link text-light" :to="{name: 'index'}">Accueil</router-link>
 					</li>
-					<li class="nav-item active">
-						<router-link class="nav-link" :to="{name: 'members'}">Membres</router-link>
+					<li class="nav-item">
+						<router-link class="nav-link text-light" :to="{name: 'members'}">Membres</router-link>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link btn_channels text-light" @click="isActive = !isActive">Channels</a>
@@ -46,7 +46,7 @@
 		</nav>
 		<transition name="slide-fade">
 			<nav v-if="isActive" class="hidden-xs-down bg-faded sidebar">
-				<button class="btn btn-secondary mb-1"><i class="fa fa-plus-circle"></i> Ajouter un channel</button>
+				<router-link class="btn btn-secondary mb-1" :to="{ name: 'addChannel' }"><i class="fa fa-plus-circle"></i> Ajouter un channel</router-link>
 				<ul class="nav nav-pills flex-column">
 					<li class="nav-item" v-for="channel, key in channels" :key="channel._id">
 						<hr class="m-0" />
@@ -105,7 +105,7 @@
 
 	.sidebar {
 		width: 210px;
-		height: 100vh;
+		height: calc(100% - 65px);
 		position: absolute;
 		left: 0;
 		z-index: 1000;

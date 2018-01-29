@@ -3,7 +3,7 @@
 		<navbar></navbar>
 
 		<div class="container">
-			<h1 class="mt-3">Liste des channels</h1>
+			<h1 class="mt-3">Liste des channels <router-link class="btn btn-secondary" :to="{ name: 'addChannel' }"><i class="fa fa-plus-circle"></i> Ajouter un channel</router-link></h1>
 			<hr />
 			<div v-if="channels" class="row">
 				<div v-for="channel, key in channels" class="card m-3 col-md-3 col-sm-8 col-lg-3 p-0 mx-auto">

@@ -1,5 +1,5 @@
 import api from '@/services/api'
-import store from '@/store'
+import router from '@/router'
 
 export default {
     namespaced: true,
@@ -12,6 +12,12 @@ export default {
     mutations: {
         setLinkActive: (state, key) => {
             state.linkActive = key
+        },
+        addChannel: (state, channel) => {
+            state.channels.push(channel)
+            router.push({
+                name: 'index'
+            })
         },
         setChannels: (state, channels) => {
             state.channels = channels
@@ -57,20 +63,27 @@ export default {
         setLinkActive: ({ commit }, key) => {
             commit('setLinkActive', key)
         },
+        addChannel: ({ commit }, credentials) => {
+            api.post('/api/channels', credentials)
+                .then((response) => {
+                    commit('addChannel', response.data)
+                }).catch((error) => {
+                    console.log(error)
+                })
+        },
         channels: ({ commit }) => {
             api.get('/api/channels')
                 .then((response) => {
                     commit('setChannels', response.data)
                 }).catch((error) => {
-                console.log(error)
-            })
+                    console.log(error)
+                })
         },
         channel({ commit }, id) {
             api.get('/api/channels/' + id)
                 .then((response) => {
                     commit('setCurrent', response.data)
-                })
-                .catch((error) => {
+                }).catch((error) => {
                     console.log(error)
                 })
         },
@@ -81,6 +94,14 @@ export default {
                 }).catch((error) => {
                     console.log(error)
                 })
+        },
+        setPost: ({ commit }, credentials) => {
+            api.put('api/channels/' + credentials.post.channel_id + '/posts/' + credentials.post._id, { message: credentials.messageEdit })
+                .then((response) => {
+                    commit("setPost", { post: credentials.post, newPost: response.data })
+                }).catch((error) => {
+                console.log(error)
+            })
         },
         deletePost: ({ commit }, post) => {
             api.delete('/api/channels/' + post.channel_id + '/posts/' + post._id)
@@ -94,21 +115,12 @@ export default {
             api.get('/api/members')
                 .then((response) => {
                     commit('setMembers', response.data)
-                })
-                .catch((error) => {
+                }).catch((error) => {
                     console.log(error)
                 })
         },
         getPostMember: ({ commit }, member_id) => {
             commit('getPostMember', member_id)
-        },
-        setPost: ({ commit }, credentials) => {
-            api.put('api/channels/' + credentials.post.channel_id + '/posts/' + credentials.post._id, { message: credentials.messageEdit })
-                .then((response) => {
-                    commit("setPost", { post: credentials.post, newPost: response.data })
-                }).catch((error) => {
-                    console.log(error)
-                })
         }
     }
 }

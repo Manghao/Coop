@@ -7,12 +7,12 @@
 					<div class="card-header">Inscription</div>
 					<div class="card-body">
 						<form v-on:submit.prevent="registration({fullname, email, password})">
-							<label for="email">Nom et/ou Prénom :</label>
+							<label for="fullname">Nom et/ou Prénom :</label>
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text"><i class="fa fa-user"></i></div>
 								</div>
-								<input type="text" class="form-control" id="fullname" placeholder="Nom et/ou Prénom"
+								<input type="text" class="form-control" id="fullname" placeholder="Nom et/ou Prénom" autofocus
 									   v-on:input="$v.fullname.$touch"
 									   v-bind:class="{invalid: $v.fullname.$error, validate: $v.fullname.$dirty
 										&& !$v.fullname.$invalid}"

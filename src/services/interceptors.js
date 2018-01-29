@@ -5,7 +5,7 @@ import store from '@/store/index'
 export default {
 	install: (Vue, options = {}) => {
 
-		api.interceptors.request.use(function (config) {
+		api.interceptors.request.use((config) => {
 			if (ls.get('token')) {
 				if (!config.params) {
 					config.params = {}
@@ -13,13 +13,13 @@ export default {
 				config.params.token = ls.get('token')
 			}
 			return config
-		}, function (error) {
+		}, (error) => {
 			return Promise.reject(error)
 		})
 
-		api.interceptors.response.use(function (response) {
+		api.interceptors.response.use((response) => {
 			return response
-		}, function (error) {
+		}, (error) => {
 			if (error.response && error.response.status === 401) {
 				store.dispatch('auth/logout', !error.response.data.error.indexOf('wrong token'))
 				options.router.push({ name: 'login' })
