@@ -27,12 +27,13 @@ require('../node_modules/font-awesome/css/font-awesome.min.css')
 require('../node_modules/bootstrap/dist/css/bootstrap.min.css')
 require('../node_modules/simplemde/dist/simplemde.min.css')
 require('../node_modules/highlight.js/styles/atom-one-dark.css')
+require('../static/css/flash.css')
 
-require('../node_modules/jquery/dist/jquery.min.js')
 require('../node_modules/popper.js/dist/popper.min.js')
 require('../node_modules/bootstrap/dist/js/bootstrap.min.js')
 require('../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js')
 require('../node_modules/vue-chat-scroll/dist/vue-chat-scroll.js')
+require('../static/js/flash.js')
 
 /* eslint-disable no-new */
 new Vue({
