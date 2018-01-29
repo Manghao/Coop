@@ -8,7 +8,7 @@
 			<div class="mt-3">
 				<form v-on:submit.prevent="addChannel({ label, topic })">
 					<div class="form-group">
-						<label for="label">Label</label>
+						<label for="label">Label :</label>
 						<input type="text" class="form-control" id="label" placeholder="Label" autofocus
 							   v-on:input="$v.label.$touch"
 							   v-bind:class="{invalid: $v.label.$error, validate: $v.label.$dirty
@@ -16,8 +16,11 @@
 							   v-model="label"
 							   v-bind:disabled="locked">
 					</div>
+					<div v-if="$v.label.$error" class="red-text error mb-3">
+						Veuillez saisir un label valide !
+					</div>
 					<div class="form-group">
-						<label for="topic">Topic</label>
+						<label for="topic">Topic :</label>
 						<input type="text" class="form-control" id="topic" placeholder="Topic"
 							   v-on:input="$v.topic.$touch"
 							   v-bind:class="{invalid: $v.topic.$error, validate: $v.topic.$dirty
