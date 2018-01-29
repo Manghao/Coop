@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import api from '@/services/api'
 import router from '@/router'
 
@@ -6,7 +7,9 @@ export default {
     state: {
         linkActive: 0,
         channels: null,
-        current: null,
+        current: {
+            posts: []
+        },
         members: []
     },
     mutations: {
@@ -20,13 +23,40 @@ export default {
             })
         },
         setChannels: (state, channels) => {
+            for (let i = 0; i < channels.length; i++) {
+                api.get('/api/channels/' + state.channels[i]._id)
+                    .then((response) => {
+                        Vue.set(channels[i], 'member_id', response.data.member_id)
+                    }).catch((error) => {
+                        console.log(error)
+                    })
+            }
             state.channels = channels
         },
+        setChannel: (state, data) => {
+            state.channels.splice(state.channels.indexOf(data.oldChannel), 1, data.newChannel)
+            router.push({
+                name: 'index'
+            })
+        },
+        deleteChannel: (state, channel) => {
+            state.channels.splice(state.channels.indexOf(channel), 1)
+        },
         addPost: (state, post) => {
+            if (!state.current.posts) {
+                state.current = {
+                    posts: []
+                }
+            }
             state.current.posts.push(post)
+        },
+        setPost: (state, data) => {
+            state.current.posts.splice(state.current.posts.indexOf(data.oldPost), 1, data.newPost)
         },
         deletePost: (state, post) => {
             state.current.posts.splice(state.current.posts.indexOf(post), 1)
+            if (state.current.posts.length === 0)
+                state.current.posts = []
         },
         getPostMember: (state, member_id) => {
             state.members.forEach((member) => {
@@ -40,9 +70,6 @@ export default {
         },
         setCurrent: (state, data) => {
             state.current = data
-        },
-        setPost: (state, data) => {
-            state.current.posts.splice(state.current.posts.indexOf(data.post), 1, data.newPost)
         }
     },
     getters: {
@@ -87,6 +114,22 @@ export default {
                     console.log(error)
                 })
         },
+        setChannel: ({ commit }, credentials) => {
+            api.put('/api/channels/' + credentials.oldChannel._id, credentials)
+                .then((response) => {
+                    commit('setChannel', { oldChannel: credentials.oldChannel, newChannel: response.data})
+                }).catch((error) => {
+                    console.log(error)
+                })
+        },
+        deleteChannel: ({ commit }, channel) => {
+            api.delete('/api/channels/' + channel._id)
+                .then((response) => {
+                    commit('deleteChannel', channel)
+                }).catch((error) => {
+                    console.log(error)
+                })
+        },
         addPost: ({ commit, state }, credentials) => {
             api.post('/api/channels/' + state.current._id + '/posts', credentials)
                 .then((response) => {
@@ -98,10 +141,10 @@ export default {
         setPost: ({ commit }, credentials) => {
             api.put('api/channels/' + credentials.post.channel_id + '/posts/' + credentials.post._id, { message: credentials.messageEdit })
                 .then((response) => {
-                    commit("setPost", { post: credentials.post, newPost: response.data })
+                    commit("setPost", { oldPost: credentials.post, newPost: response.data })
                 }).catch((error) => {
-                console.log(error)
-            })
+                    console.log(error)
+                })
         },
         deletePost: ({ commit }, post) => {
             api.delete('/api/channels/' + post.channel_id + '/posts/' + post._id)
