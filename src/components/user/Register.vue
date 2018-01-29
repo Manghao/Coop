@@ -120,9 +120,6 @@
 </script>
 
 <style>
-	body {
-		background-color: #eeeeee;
-	}
 	.error, .infos-form {
 		font-size: 12px;
 		margin-top: -20px;

@@ -163,7 +163,7 @@
                 this.member = member
             },
             setPost (post) {
-                let messageEdit = this.$el.querySelector('input#p-' + post._id).value
+                let messageEdit = this.$el.querySelector('textarea#p-' + post._id).value
                 let credentials = { post, messageEdit }
                 this.$store.dispatch('channel/setPost', credentials)
                 this._data.messageEdit = ''
