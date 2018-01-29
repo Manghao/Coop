@@ -1,5 +1,16 @@
 <template>
 	<div class="container">
+		<b-alert :show="dismissCountDown"
+	             dismissible
+	             variant="warning"
+	             @dismissed="dismissCountdown=0"
+	             @dismiss-count-down="countDownChanged">
+	      This alert will dismiss after {{dismissCountDown}} seconds...
+	    </b-alert>
+	    <b-btn @click="showAlert" variant="info" class="m-1">
+	      Show alert with count-down timer
+	    </b-btn>
+
 		<h1 class="text-center mt-5">Co'op</h1>
 		<div class="row">
 			<div class="col-10 offset-md-1 mt-5">
@@ -59,7 +70,9 @@
             return {
                 email: '',
                 password: '',
-                locked: false
+                locked: false,
+                dismissSecs: 5,
+      			dismissCountDown: 0
             }
         },
         validations: {
@@ -73,7 +86,13 @@
             }
         },
         methods: {
-            ...mapActions('auth', ['login'])
+            ...mapActions('auth', ['login']),
+            countDownChanged (dismissCountDown) {
+		      this.dismissCountDown = dismissCountDown
+		    },
+		    showAlert () {
+		      this.dismissCountDown = this.dismissSecs
+		    }
         }
     }
 </script>
