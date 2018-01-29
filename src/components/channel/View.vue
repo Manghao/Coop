@@ -22,7 +22,7 @@
 								<span v-else class="text-danger">Membre supprimé</span>
 							</strong> le {{ p.updated_at | formatDate }}</small></p>
 							<form v-on:submit.prevent="setPost(p)" v-if="edit === p._id" class="input-group">
-								<input :id="'p-' + p._id" class="form-control rounded mr-2" type="text" :value="p.message" autofocus required>
+								<textarea :id="'p-' + p._id" class="form-control rounded mr-2" type="text" :value="p.message" autofocus required></textarea>
 								<button type="submit" class="btn btn-primary">Edit</button>
 							</form>
 							<p class="card-text pl-5 pr-5" v-else>
