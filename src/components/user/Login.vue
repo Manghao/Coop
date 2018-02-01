@@ -1,8 +1,22 @@
 <template>
 	<div class="container">
-		<h1 class="text-center mt-5">Co'op</h1>
+		<h1 class="text-center mt-5 mb-5">Co'op</h1>
 		<div class="row">
-			<div class="col-10 offset-md-1 mt-5">
+			<b-alert class="col-10 offset-md-1 mb-5" v-if="error" :show="alertCountDown"
+				dismissible
+				variant="danger"
+				@dismissed="alertCountDown=0"
+				@dismiss-count-down="alertCountDownChanged">
+
+				<p>{{ error }}</p>
+				
+				<b-progress variant="danger"
+					:max="dismissSecs"
+					:value="alertCountDown"
+					height="4px">
+				</b-progress>
+			</b-alert>
+			<div class="col-10 offset-md-1">
 				<div class="card bg-light">
 					<div class="card-header">Connexion</div>
 					<div class="card-body">
@@ -51,31 +65,45 @@
 </template>
 
 <script>
-    import { required, minLength, email } from 'vuelidate/lib/validators'
-    import { mapActions } from 'vuex'
+	import { required, minLength, email } from 'vuelidate/lib/validators'
+	import { mapActions } from 'vuex'
+	import store from '@/store'
 
-    export default {
-        data() {
-            return {
-                email: '',
-                password: '',
-                locked: false
-            }
-        },
-        validations: {
-            email: {
-                required,
-                email
-            },
-            password: {
-                required,
-                minLenght: minLength(6)
-            }
-        },
-        methods: {
-            ...mapActions('auth', ['login'])
-        }
-    }
+	export default {
+		data() {
+			return {
+				email: '',
+				password: '',
+				locked: false,
+				alertCountDown: 0,
+				dismissSecs: 5,
+				error: null
+			}
+		},
+		validations: {
+			email: {
+				required,
+				email
+			},
+			password: {
+				required,
+				minLenght: minLength(6)
+			}
+		},
+		methods: {
+			login (credentials) {
+				store.dispatch('auth/login', credentials)
+				let err = store.getters['auth/getError']
+				if (err != false) {
+					this.error = err
+					this.alertCountDown = this.dismissSecs
+				}
+			},
+			alertCountDownChanged (alertCountDown) {
+				this.alertCountDown = alertCountDown
+			}
+		}
+	}
 </script>
 
 <style>

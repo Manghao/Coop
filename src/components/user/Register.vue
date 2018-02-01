@@ -1,8 +1,22 @@
 <template>
 	<div class="container">
-		<h1 class="text-center mt-5">Co'op</h1>
+		<h1 class="text-center mt-5 mb-5">Co'op</h1>
 		<div class="row">
-			<div class="col-10 offset-md-1 mt-5">
+			<b-alert class="col-10 offset-md-1 mb-5" v-if="error" :show="alertCountDown"
+				dismissible
+				variant="danger"
+				@dismissed="alertCountDown=0"
+				@dismiss-count-down="alertCountDownChanged">
+
+				<p>{{ error }}</p>
+				
+				<b-progress variant="danger"
+					:max="dismissSecs"
+					:value="alertCountDown"
+					height="4px">
+				</b-progress>
+			</b-alert>
+			<div class="col-10 offset-md-1">
 				<div class="card bg-light">
 					<div class="card-header">Inscription</div>
 					<div class="card-body">
@@ -85,6 +99,7 @@
 <script>
     import { required, minLength, email, sameAs } from 'vuelidate/lib/validators'
     import { mapActions } from 'vuex'
+    import store from '@/store'
 
     export default {
         data() {
@@ -93,7 +108,10 @@
                 email: '',
                 password: '',
                 passwordConfirm: '',
-                locked: false
+                locked: false,
+				alertCountDown: 0,
+				dismissSecs: 5,
+				error: null
             }
         },
         validations: {
@@ -114,7 +132,17 @@
             }
         },
         methods: {
-            ...mapActions('auth', ['registration'])
+        	registration(credentials) {
+        		store.dispatch('auth/registration', credentials)
+        		let err = store.getters['auth/getErrorRegistration']
+        		if (err != false) {
+					this.error = err
+					this.alertCountDown = this.dismissSecs
+				}
+			},
+			alertCountDownChanged (alertCountDown) {
+				this.alertCountDown = alertCountDown
+			}
         }
     }
 </script>

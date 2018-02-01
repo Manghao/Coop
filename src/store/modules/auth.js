@@ -5,7 +5,9 @@ import router from '@/router'
 export default {
     namespaced: true,
     state: {
-        session: null
+        session: null,
+        error: false,
+        errorR: false
     },
     mutations: {
     	registration: () => {
@@ -28,23 +30,34 @@ export default {
             router.push({
                 name: 'login'
             })
+        },
+        setError: (state, err) => {
+            state.error = err
+        },
+        setErrorRegistration: (state, err) => {
+            state.errorR = err
         }
     },
     getters: {
         getSession: (state) => {
             return state.session
+        },
+        getError: (state) => {
+            return state.error
+        },
+        getErrorRegistration: (state) => {
+            return state.errorR
         }
     },
     actions: {
         registration: ({ commit }, credentials) => {
             api.post('/api/members', credentials)
                 .then((response) => {
-                    Flash.success('Inscription réussie !', 3000)
                     console.log('Inscription réussie !')
 					commit('registration')
                 }).catch((error) => {
                     let err = error.response.data.error[0][0]
-                    Flash.error(err, 3000)
+                    commit('setErrorRegistration', err)
                 	console.log(err)
                 })
         },
@@ -54,7 +67,7 @@ export default {
                     commit('signin', response.data)
                 }).catch((error) => {
                     let err = error.response.data.error
-                    Flash.error(err, 3000)
+                    commit('setError', err)
                 	console.log(err)
                 })
         },
@@ -62,7 +75,6 @@ export default {
             api.delete('/api/members/signout')
                 .then((response) => {
                     commit('logout')
-                    Flash.info('Vous êtes déconnecté', 3000)
                 }).catch((error) => {
                     console.log(error)
                 })
@@ -71,7 +83,6 @@ export default {
             api.delete('/api/members/' + member._id)
                 .then((response) => {
                     console.log(response)
-                    Flash.success(`${member.fullname} supprimé`, 3000)
                 }).catch((error) => {
                     console.log(error)
                 })
