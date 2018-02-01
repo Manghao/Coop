@@ -18,4 +18,16 @@ npm run build
 npm run build --report
 ```
 
+## Build Windows, Linux, MacOS application
+``` bash
+# build for windows
+npm run win
+
+# build for linux
+npm run linux
+
+# build for macOs
+npm run macOs
+```
+
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
