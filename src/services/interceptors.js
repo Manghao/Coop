@@ -21,6 +21,7 @@ export default {
 			return response
 		}, (error) => {
 			if (error.response && error.response.status === 401) {
+				ls.remove('token')
 				store.dispatch('auth/logout', !error.response.data.error.indexOf('wrong token'))
 				options.router.push({ name: 'login' })
 			}
