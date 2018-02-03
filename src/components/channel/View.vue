@@ -16,13 +16,13 @@
 							</span>
 
 							<p><small>Par <strong>
-								<a class="userFullName" data-toggle="modal" data-target="#userInfos" @click="memberInfos(getPostMember(p.member_id))" v-if="getPostMember(p.member_id)">
+								<a class="userFullName" @click="memberInfos(getPostMember(p.member_id))" v-if="getPostMember(p.member_id)">
 									{{ getPostMember(p.member_id).fullname }}
 								</a>
 								<span v-else class="text-danger">Membre supprimé</span>
 							</strong> le {{ p.updated_at | formatDate }}</small></p>
 							<form v-on:submit.prevent="setPost(p)" v-if="edit === p._id" class="input-group">
-								<textarea :id="'p-' + p._id" class="form-control rounded mr-2" type="text" :value="p.message" autofocus required></textarea>
+								<textarea :id="'p-' + p._id" class="form-control rounded mr-2" :value="p.message" autofocus required></textarea>
 								<button type="submit" class="btn btn-primary">Edit</button>
 							</form>
 							<p class="card-text pl-5 pr-5" v-else>
@@ -53,24 +53,14 @@
 			</form>
 		</div>
 
-		<div v-if="member" class="modal fade" id="userInfos" tabindex="1" role="dialog" aria-labelledby="userInfos" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="fullname">{{ member.fullname }}</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<p><strong>Email :</strong> {{ member.email }}</p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-					</div>
-				</div>
+		<b-modal v-if="member" ref="modal_member" :title="member.fullname">
+			<div>
+				<span><strong>Email :</strong> {{ member.email }}</span>
 			</div>
-		</div>
+			<div slot="modal-footer">
+				<button type="button" class="btn btn-secondary" @click="closeModalMember()">Fermer</button>
+			</div>
+		</b-modal>
 	</div>
 </template>
 
@@ -161,6 +151,7 @@
             },
             memberInfos (member) {
                 this.member = member
+				this.$refs.modal_member.show()
             },
             setPost (post) {
                 let messageEdit = this.$el.querySelector('textarea#p-' + post._id).value
@@ -168,7 +159,10 @@
                 this.$store.dispatch('channel/setPost', credentials)
                 this._data.messageEdit = ''
                 this._data.edit = null
-            }
+            },
+			closeModalMember() {
+                this.$refs.modal_member.hide()
+			}
         }
     }
 </script>
@@ -220,5 +214,10 @@
 	.markdown-editor .CodeMirror, .markdown-editor .CodeMirror-scroll {
 		min-height: 100%;
 		max-height: 100%;
+	}
+
+	textarea[id^=p-] {
+		min-height: 62px;
+		max-height: 250px;
 	}
 </style>

@@ -10,7 +10,7 @@
 					<img class="card-img-top" src="http://via.placeholder.com/350x150" alt="Card image cap">
 					<div class="card-body">
 						<span v-if="channel.member_id === session._id"  class="float-right">
-							<i class="fa fa-pencil-square-o mr-1" data-toggle="modal" data-target="#editChannel" @click="showEditChannel(channel)"></i>
+							<i class="fa fa-pencil-square-o mr-1" @click="showEditChannel(channel)"></i>
 							<i class="fa fa-times text-danger" @click="deleteChannel(channel)"></i>
 						</span>
 						<router-link :to="{ name: 'channel', params: { channel_id: channel._id }}">
@@ -42,7 +42,7 @@
 						<input id="channel-topic" class="form-control" :value="editChannel.topic" required>
 					</div>
 					<div slot="modal-footer">
-						<button type="submit" class="btn btn-primary">Update</button>
+						<button type="submit" class="btn btn-primary">Editer</button>
 						<button type="button" class="btn btn-secondary" @click="closeModal()">Fermer</button>
 					</div>
 				</b-modal>
