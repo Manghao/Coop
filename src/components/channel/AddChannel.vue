@@ -32,7 +32,7 @@
 						Veuillez saisir un topic valide !
 					</div>
 					<div class="mt-4">
-						<button type="submit" v-bind:disabled="$v.$invalid || locked" class="btn btn-primary">Valider</button>
+						<button type="submit" v-bind:disabled="$v.$invalid || locked" class="btn btn-primary">Créer</button>
 					</div>
 				</form>
 			</div>

@@ -1,12 +1,11 @@
 <template>
 	<div>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<b-navbar class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<a class="navbar-brand" href="/">Co'op</a>
-			<button @click="isActive ? isActive = !isActive : null" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
 
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+
+			<b-collapse class="navbar-collapse" id="nav_collapse">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active">
 						<router-link class="nav-link text-light" :to="{name: 'index'}">Accueil</router-link>
@@ -19,31 +18,22 @@
 					</li>
 				</ul>
 				<div class="btn-group mt-1 mb-1" role="group">
-					<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#account">{{ user.fullname }}</button>
+					<button type="button" class="btn btn-secondary" @click="showModalAccount()">{{ user.fullname }}</button>
 					<button class="btn btn-danger" @click="logout"><i class="fa fa-sign-out"></i></button>
 				</div>
-			</div>
+			</b-collapse>
+		</b-navbar>
 
-			<div class="modal fade" id="account" tabindex="1" role="dialog" aria-labelledby="accountModal" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="accountModal">Mes informations</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<p><strong>Nom et/ou prénom :</strong> {{ user.fullname }}</p>
-							<p><strong>Email :</strong> {{ user.email }}</p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-						</div>
-					</div>
-				</div>
+		<b-modal ref="modal_account" title="Mes informations">
+			<div>
+				<p><strong>Nom et/ou prénom :</strong> {{ user.fullname }}</p>
+				<p class="mb-0"><strong>Email :</strong> {{ user.email }}</p>
 			</div>
-		</nav>
+			<div slot="modal-footer">
+				<button type="button" class="btn btn-secondary" @click="closeModalAccount()">Fermer</button>
+			</div>
+		</b-modal>
+
 		<transition name="slide-fade">
 			<nav v-if="isActive" class="hidden-xs-down bg-faded sidebar">
 				<router-link class="btn btn-secondary mb-1" :to="{ name: 'addChannel' }"><i class="fa fa-plus-circle"></i> Ajouter un channel</router-link>
@@ -93,6 +83,12 @@
             changeChannel(key) {
                 this._data.isActive = !this._data.isActive
                 this.$store.dispatch('channel/setLinkActive', key)
+            },
+            showModalAccount() {
+                this.$refs.modal_account.show()
+            },
+            closeModalAccount() {
+                this.$refs.modal_account.hide()
             }
         }
     }

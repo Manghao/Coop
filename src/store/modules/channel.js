@@ -24,7 +24,7 @@ export default {
         },
         setChannels: (state, channels) => {
             for (let i = 0; i < channels.length; i++) {
-                api.get('/api/channels/' + state.channels[i]._id)
+                api.get('/api/channels/' + channels[i]._id)
                     .then((response) => {
                         Vue.set(channels[i], 'member_id', response.data.member_id)
                     }).catch((error) => {
