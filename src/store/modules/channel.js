@@ -7,9 +7,7 @@ export default {
     state: {
         linkActive: 0,
         channels: null,
-        current: {
-            posts: []
-        },
+        current: null,
         members: []
     },
     mutations: {
@@ -43,11 +41,6 @@ export default {
             state.channels.splice(state.channels.indexOf(channel), 1)
         },
         addPost: (state, post) => {
-            if (!state.current.posts) {
-                state.current = {
-                    posts: []
-                }
-            }
             state.current.posts.push(post)
         },
         setPost: (state, data) => {

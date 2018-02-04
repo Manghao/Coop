@@ -1,13 +1,12 @@
 <template>
 	<div>
 		<navbar></navbar>
-
 		<div class="chat">
 			<div class="card" v-if="channel">
 				<h4 class="card-header">
 					{{ channel.label }}
 				</h4>
-				<div class="card-body posts" v-if="channel.posts.length" v-chat-scroll>
+				<div class="card-body posts" v-if="channel.posts" v-chat-scroll>
 					<div class="card border-0 rounded-0" v-for="p in channel.posts" :key="p._id">
 						<div class="card-body p-2">
 							<span v-if="p.member_id === session._id && !edit" class="float-right">
