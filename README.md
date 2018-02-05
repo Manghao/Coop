@@ -18,6 +18,15 @@ npm run build
 npm run build --report
 ```
 
+## Run app
+``` bash
+# run server
+npm run start
+
+# run with electron
+eletron . # or electron elect.js
+```
+
 ## Build Windows, Linux, MacOS application
 ``` bash
 # install electron and electron-packager
